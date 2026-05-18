@@ -4,52 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazing Colors | Elite Ocean Journeys</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/beamazingcolors/amazingcolors/main/HRR.png">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-dark: #000000; --brand-blue: #04263a; --accent: #bd5307; --light: #0cb5d6; --white: #ffffff; --pearl-bg: #f7f5f0; --gradient: linear-gradient(135deg, #f5841a 0%, #ffb347 100%); }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--primary-dark); color: var(--white); font-family: 'Montserrat', sans-serif; }
-
-        /* Pantalla de Inicio Corregida */
-        #welcome-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9998; transition: transform 1.2s ease, opacity 1.2s ease; }
-        #welcome-screen.dismissed { transform: translateY(-100vh); opacity: 0; visibility: hidden; }
-        .welcome-btn { background-color: var(--accent); color: var(--white); padding: 18px 50px; border-radius: 50px; cursor: pointer; border: none; font-weight: 600; text-transform: uppercase; }
-
-        /* Interfaz Principal */
-        #main-site-wrapper { display: none; opacity: 0; background-color: var(--pearl-bg); color: var(--brand-blue); min-height: 100vh; transition: opacity 1s ease; }
-        #main-site-wrapper.visible { display: block; opacity: 1; }
-
-        .nav-bar { background: rgba(247, 245, 240, 0.96); padding: 20px; display: flex; justify-content: center; gap: 20px; border-bottom: 1px solid rgba(4, 38, 58, 0.08); position: sticky; top: 0; z-index: 100; }
-        .nav-btn { background: none; border: none; color: var(--brand-blue); text-transform: uppercase; cursor: pointer; font-weight: 600; padding: 5px 10px; }
-        .nav-btn.active { border-bottom: 2px solid var(--accent); color: var(--accent); }
-
-        /* Asistente */
+        :root { --primary-dark: #000000; --brand-blue: #04263a; --accent: #bd5307; --light: #0cb5d6; --white: #ffffff; --pearl-bg: #f7f5f0; }
+        body { background-color: var(--pearl-bg); color: var(--brand-blue); font-family: 'Montserrat', sans-serif; }
+        
+        #main-site-wrapper { min-height: 100vh; padding-bottom: 50px; }
+        .nav-bar { background: #fff; padding: 20px; display: flex; justify-content: center; gap: 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #ddd; }
+        .nav-btn { background: none; border: none; cursor: pointer; font-weight: 600; text-transform: uppercase; }
+        .nav-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+        
         #assistant-section { max-width: 900px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 12px; display: none; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        select { padding: 12px; border: 1px solid #ddd; border-radius: 6px; width: 100%; }
-        .btn-generate { background: var(--brand-blue); color: #fff; padding: 15px; border-radius: 30px; border: none; cursor: pointer; width: 100%; text-transform: uppercase; font-weight: 700; margin-top: 20px; }
-        .day-block { background: var(--pearl-bg); padding: 20px; margin-top: 15px; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; }
+        .btn-generate { background: var(--brand-blue); color: #fff; padding: 15px; border-radius: 30px; border: none; width: 100%; cursor: pointer; margin-top: 20px; }
+        .day-block { background: var(--pearl-bg); padding: 20px; margin-top: 15px; border-left: 4px solid var(--accent); }
     </style>
 </head>
 <body>
 
-    <div id="welcome-screen">
-        <h1>Amazing Colors</h1>
-        <button class="welcome-btn" onclick="startExperience()">Comencemos la experiencia</button>
-    </div>
-
     <div id="main-site-wrapper">
         <nav class="nav-bar">
-            <button class="nav-btn" id="btnTour" onclick="showCatalog()">Experiencias</button>
+            <button class="nav-btn active" id="btnTour" onclick="showCatalog()">Experiencias</button>
             <button class="nav-btn" id="btnAssistant" onclick="toggleAssistant()">Asistente Vacacional</button>
         </nav>
 
-        <main id="catalog-grid" style="display: grid; padding: 40px; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-            </main>
+        <main id="catalog-grid" style="display: grid; padding: 40px; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"></main>
 
         <section id="assistant-section">
-            <h2 style="font-family: 'Cinzel'; margin-bottom: 20px;">Asistente Vacacional</h2>
+            <h2 style="font-family: 'Cinzel'; margin-bottom: 20px;">Tu Asistente Vacacional</h2>
             <div class="form-grid">
                 <div><label>Noches</label><select id="nights"></select></div>
                 <div><label>Personas</label><select id="people"></select></div>
@@ -62,15 +44,24 @@
     </div>
 
     <script>
-        // 1. Lógica de inicio corregida
-        function startExperience() {
-            document.getElementById('welcome-screen').classList.add('dismissed');
-            const main = document.getElementById('main-site-wrapper');
-            main.style.display = 'block'; 
-            setTimeout(() => main.classList.add('visible'), 50);
+        const TSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9f5_81pPWsXVaJ5uKaifOyjpmSprGKAzEkGh7qMSd5R83cV8UCJeqldoZIb5l3sN8kDEbFoC2NY0s/pub?gid=451869619&single=true&output=tsv';
+        let fullData = [];
+
+        // 1. Cargar datos desde Google Sheets
+        async function init() {
+            try {
+                const response = await fetch(TSV_URL);
+                const text = await response.text();
+                const rows = text.replace(/\r/g, '').split('\n').map(r => r.split('\t'));
+                const headers = rows[0].map(h => h.trim());
+                fullData = rows.slice(1).map(row => {
+                    let item = {}; headers.forEach((h, i) => { item[h] = row[i]?.trim(); }); return item;
+                });
+                console.log("Datos cargados:", fullData.length);
+            } catch (err) { console.error("Error cargando datos:", err); }
         }
 
-        // 2. Inicializar Selectores
+        // 2. Inicializar selectores
         const nightsSelect = document.getElementById('nights');
         for (let i = 2; i <= 30; i++) nightsSelect.innerHTML += `<option value="${i}">${i} Noches</option>`;
         
@@ -80,45 +71,49 @@
         const budgetSelect = document.getElementById('budget');
         for (let i = 2000; i <= 99000; i += 5000) budgetSelect.innerHTML += `<option value="${i}">Hasta $${i.toLocaleString()} MXN</option>`;
 
-        // 3. Navegación
+        // 3. Lógica de navegación
         function toggleAssistant() {
             document.getElementById('catalog-grid').style.display = 'none';
             document.getElementById('assistant-section').style.display = 'block';
-            document.getElementById('btnAssistant').classList.add('active');
-            document.getElementById('btnTour').classList.remove('active');
         }
 
         function showCatalog() {
             document.getElementById('catalog-grid').style.display = 'grid';
             document.getElementById('assistant-section').style.display = 'none';
-            document.getElementById('btnTour').classList.add('active');
-            document.getElementById('btnAssistant').classList.remove('active');
         }
 
-        // 4. Lógica de itinerario con filtro de presupuesto
+        // 4. Generar itinerario (Ahora con acceso a fullData)
         function generateItinerary() {
             const maxBudget = parseInt(document.getElementById('budget').value);
             const nights = parseInt(document.getElementById('nights').value);
             const dest = document.getElementById('dest').value;
             const res = document.getElementById('itinerary-result');
             
-            // Filtrar experiencias de tu variable global fullData
+            // Filtro seguro: asegura que 'Precio' exista
             const filteredExps = fullData.filter(item => {
-                let price = parseInt((item['Precio'] || '0').replace(/[^0-9]/g, '')) || 0;
-                return price <= maxBudget;
+                let p = item['Precio'] ? parseInt(item['Precio'].replace(/[^0-9]/g, '')) : 0;
+                return p <= maxBudget;
             });
 
-            let html = `<h3>Itinerario para ${nights} noches en ${dest}</h3>`;
+            if (filteredExps.length === 0) {
+                res.innerHTML = `<p>No encontramos experiencias bajo ese presupuesto. ¡Prueba aumentando el límite!</p>`;
+                return;
+            }
+
+            let html = `<h3>Itinerario personalizado para ${nights} noches en ${dest}</h3>`;
             for (let i = 1; i <= nights; i++) {
                 if (i % 2 !== 0) {
-                    const exp = filteredExps[(i-1) % (filteredExps.length || 1)];
+                    const exp = filteredExps[(i-1) % filteredExps.length];
                     html += `<div class="day-block"><h4>Día ${i}: Actividad</h4><p>${exp ? exp['Nombre'] : "Exploración de lujo"}</p></div>`;
                 } else {
-                    html += `<div class="day-block"><h4>Día ${i}: Descanso</h4><p>Disfruta de la gastronomía local en ${dest}.</p></div>`;
+                    html += `<div class="day-block"><h4>Día ${i}: Descanso</h4><p>Disfruta de las recomendaciones locales en ${dest}.</p></div>`;
                 }
             }
             res.innerHTML = html;
         }
+
+        // Iniciar carga de datos al abrir la página
+        init();
     </script>
 </body>
 </html>
