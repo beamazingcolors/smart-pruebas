@@ -6,10 +6,10 @@
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f7f5f0; padding: 20px; color: #04263a; }
         .assistant-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        select, .btn-generate { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; margin-top: 10px; }
-        .btn-generate { background: #04263a; color: white; cursor: pointer; font-weight: bold; border: none; }
-        .day-block { background: #fff; padding: 15px; margin-top: 15px; border-left: 5px solid #bd5307; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; }
+        .btn-generate { width: 100%; padding: 15px; background: #04263a; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        .day-block { background: #fff; padding: 20px; margin-top: 15px; border-left: 5px solid #bd5307; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -17,11 +17,12 @@
 <div class="assistant-container">
     <h2>Diseñador de Itinerarios</h2>
     <div class="form-grid">
-        <select id="nights"></select>
-        <select id="people"></select>
-        <select id="budget"></select>
-        <select id="dest"><option value="Cancun">Cancún</option><option value="Playa del Carmen">Playa del Carmen</option><option value="Tulum">Tulum</option></select>
+        <div><label>Noches</label><select id="nights"></select></div>
+        <div><label>Personas</label><select id="people"></select></div>
+        <div><label>Presupuesto (MXN)</label><select id="budget"></select></div>
+        <div><label>Destino</label><select id="dest"><option value="Cancun">Cancún</option><option value="Playa del Carmen">Playa del Carmen</option><option value="Tulum">Tulum</option></select></div>
     </div>
+    
     <button id="plan-btn" class="btn-generate">PLANIFICAR MI ITINERARIO</button>
     <div id="itinerary-result" style="margin-top:20px;"></div>
 </div>
@@ -30,7 +31,7 @@
     const TSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9f5_81pPWsXVaJ5uKaifOyjpmSprGKAzEkGh7qMSd5R83cV8UCJeqldoZIb5l3sN8kDEbFoC2NY0s/pub?output=tsv';
     let fullData = [];
 
-    // Cargar datos al iniciar
+    // 1. Cargar datos
     async function loadData() {
         try {
             const resp = await fetch(TSV_URL);
@@ -40,48 +41,52 @@
             fullData = rows.slice(1).map(row => {
                 let obj = {}; headers.forEach((h, i) => obj[h.trim()] = row[i]?.trim()); return obj;
             });
-            console.log("Datos cargados correctamente:", fullData);
-        } catch(e) { alert("Error cargando datos: " + e); }
+            console.log("Datos cargados correctamente:", fullData.length, "items.");
+        } catch(e) { console.error("Error al cargar:", e); }
     }
 
+    // 2. Inicializar al cargar la página
     window.addEventListener('DOMContentLoaded', () => {
         loadData();
         for(let i=2; i<=30; i++) document.getElementById('nights').innerHTML += `<option value="${i}">${i} Noches</option>`;
         for(let i=1; i<=60; i++) document.getElementById('people').innerHTML += `<option value="${i}">${i} Personas</option>`;
         for(let i=2000; i<=99000; i+=5000) document.getElementById('budget').innerHTML += `<option value="${i}">Hasta $${i.toLocaleString()} MXN</option>`;
 
-        // Asignación directa del evento
-        document.getElementById('plan-btn').addEventListener('click', generateItinerary);
+        // 3. Conexión segura del botón
+        document.getElementById('plan-btn').addEventListener('click', () => {
+            console.log("Botón presionado. Generando...");
+            generateItinerary();
+        });
     });
 
     function generateItinerary() {
         const res = document.getElementById('itinerary-result');
-        const budget = parseInt(document.getElementById('budget').value);
         const nights = parseInt(document.getElementById('nights').value);
         const dest = document.getElementById('dest').value;
 
-        if (fullData.length === 0) return alert("Cargando datos... espera un segundo.");
+        if (fullData.length === 0) {
+            res.innerHTML = "<p style='color:red'>Los datos no han cargado aún. Espera 2 segundos y presiona de nuevo.</p>";
+            return;
+        }
 
-        // Filtramos buscando las columnas EXACTAS (TIPO, Nombre, Precios)
+        // Filtramos buscando las columnas EXACTAS de tu hoja (TIPO, Nombre, Precios)
         const yate = fullData.find(i => i['TIPO'] && i['TIPO'].toLowerCase().includes('yate'));
         const tours = fullData.filter(i => i['TIPO'] && i['TIPO'].toLowerCase().includes('tour'));
 
-        let html = `<h3>Itinerario en ${dest}</h3>`;
+        let html = `<h3>Itinerario para ${nights} noches en ${dest}</h3>`;
         let spent = 0;
 
         for(let i=1; i<=nights; i++) {
             if(i % 2 !== 0) {
                 const act = (i === 1 && yate) ? yate : tours[(i-1) % (tours.length || 1)];
                 const nombre = act ? act['Nombre'] : "Tour Privado";
-                
-                // Leemos 'Precios' (plural) y limpiamos
-                const precioVal = act ? act['Precios'] : "0"; 
-                const precio = parseInt(precioVal.toString().replace(/[^0-9]/g, '')) || 0;
+                const precioRaw = act ? act['Precios'] : "2000"; 
+                const precio = parseInt(precioRaw.toString().replace(/[^0-9]/g, '')) || 2000;
                 
                 spent += precio;
-                html += `<div class="day-block"><strong>Día ${i}:</strong> ${nombre} <br><small>Costo detectado: $${precio.toLocaleString()} MXN</small></div>`;
+                html += `<div class="day-block"><strong>Día ${i}:</strong> ${nombre} ($${precio.toLocaleString()} MXN)</div>`;
             } else {
-                html += `<div class="day-block"><strong>Día ${i}:</strong> Descanso en ${dest}. <a href="https://www.google.com/maps/search/${dest}+restaurantes" target="_blank">📍 Ver mapa</a></div>`;
+                html += `<div class="day-block"><strong>Día ${i}:</strong> Descanso en ${dest}.</div>`;
             }
         }
         res.innerHTML = html + `<p style="margin-top:20px;"><strong>Total estimado:</strong> $${spent.toLocaleString()} MXN</p>`;
