@@ -853,7 +853,8 @@
             try {
                 const response = await fetch(TSV_URL);
                 const text = await response.text();
-                const rows = text.replace(//g, '').split('
+                const rows = text.replace(/
+/g, '').split('
 ').filter(r => r.trim() !== '').map(r => r.split('	'));
                 const headers = rows[0].map(h => h.trim());
                 fullData = rows.slice(1).map(row => {
