@@ -4,83 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazing Colors | Elite Ocean Journeys</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --brand-blue: #04263a; --accent: #bd5307; --pearl-bg: #f7f5f0; }
-        body { background-color: var(--pearl-bg); color: var(--brand-blue); font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; }
-        
-        /* Pantalla Bienvenida */
-        #welcome-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: transform 0.8s ease, opacity 0.8s ease; }
-        #welcome-screen.dismissed { transform: translateY(-100vh); opacity: 0; pointer-events: none; }
-        .welcome-btn { background-color: var(--accent); color: #fff; padding: 18px 40px; border-radius: 50px; cursor: pointer; border: none; font-weight: 600; }
-        
-        /* Interfaz Principal */
-        #main-site-wrapper { display: none; padding-bottom: 50px; }
-        
-        /* Asistente */
-        #assistant-section { max-width: 800px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        select { padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 6px; }
-        .btn-generate { background: var(--brand-blue); color: #fff; padding: 15px; border-radius: 30px; border: none; width: 100%; cursor: pointer; font-weight: 700; }
-        .day-block { background: var(--pearl-bg); padding: 15px; margin-top: 10px; border-left: 4px solid var(--accent); }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f7f5f0; color: #04263a; margin: 0; padding: 20px; }
+        .assistant-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        select, .btn-generate { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
+        .btn-generate { background: #04263a; color: white; cursor: pointer; font-weight: bold; border: none; }
+        .day-block { background: #fdfdfd; padding: 20px; margin-top: 15px; border-left: 5px solid #bd5307; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-    <div id="welcome-screen">
-        <h1 style="color:white; margin-bottom:20px;">Amazing Colors</h1>
-        <button class="welcome-btn" onclick="startExperience()">Comencemos la experiencia</button>
+<div class="assistant-container">
+    <h2>Diseñador de Itinerarios</h2>
+    <div class="form-grid">
+        <select id="nights"><option value="">Selecciona Noches</option></select>
+        <select id="people"><option value="">Selecciona Personas</option></select>
+        <select id="budget"><option value="">Selecciona Presupuesto</option></select>
+        <select id="dest"><option value="Cancun">Cancún</option><option value="Playa del Carmen">Playa del Carmen</option><option value="Tulum">Tulum</option></select>
     </div>
+    <button class="btn-generate" onclick="generateItinerary()">PLANIFICAR MI ITINERARIO</button>
+    <div id="itinerary-result"></div>
+</div>
 
-    <div id="main-site-wrapper">
-        <section id="assistant-section">
-            <h2 style="font-family: 'Cinzel'; margin-bottom: 20px;">Tu Asistente Vacacional</h2>
-            <div class="form-grid">
-                <div><label>Noches</label><select id="nights"></select></div>
-                <div><label>Personas</label><select id="people"></select></div>
-                <div><label>Presupuesto (MXN)</label><select id="budget"></select></div>
-                <div><label>Destino</label><select id="dest"><option value="Cancun">Cancún</option><option value="Playa del Carmen">Playa del Carmen</option><option value="Tulum">Tulum</option></select></div>
-            </div>
-            <button class="btn-generate" onclick="generateItinerary()">Calcular e Planificar mi Itinerario</button>
-            <div id="itinerary-result" style="margin-top: 30px;"></div>
-        </section>
-    </div>
+<script>
+    const TSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9f5_81pPWsXVaJ5uKaifOyjpmSprGKAzEkGh7qMSd5R83cV8UCJeqldoZIb5l3sN8kDEbFoC2NY0s/pub?gid=451869619&single=true&output=tsv';
+    let fullData = [];
 
-    <script>
-        // Función de inicio corregida
-        function startExperience() {
-            document.getElementById('welcome-screen').classList.add('dismissed');
-            document.getElementById('main-site-wrapper').style.display = 'block';
+    // Cargar Datos
+    async function init() {
+        try {
+            const response = await fetch(TSV_URL);
+            const text = await response.text();
+            const rows = text.split('\n').map(r => r.split('\t'));
+            const headers = rows[0].map(h => h.trim());
+            fullData = rows.slice(1).map(row => {
+                let item = {}; headers.forEach((h, i) => { item[h] = row[i]?.trim(); }); return item;
+            });
+            console.log("Datos cargados correctamente");
+        } catch (e) { alert("Error cargando los datos. Revisa tu conexión."); }
+    }
+
+    // Poblar Selectores
+    window.onload = () => {
+        init();
+        for (let i = 2; i <= 30; i++) document.getElementById('nights').innerHTML += `<option value="${i}">${i} Noches</option>`;
+        for (let i = 1; i <= 60; i++) document.getElementById('people').innerHTML += `<option value="${i}">${i} Personas</option>`;
+        for (let i = 2000; i <= 99000; i += 5000) document.getElementById('budget').innerHTML += `<option value="${i}">Hasta $${i.toLocaleString()} MXN</option>`;
+    };
+
+    function generateItinerary() {
+        const budget = parseInt(document.getElementById('budget').value);
+        const nights = parseInt(document.getElementById('nights').value);
+        const dest = document.getElementById('dest').value;
+        const res = document.getElementById('itinerary-result');
+
+        if (!budget || !nights) { alert("Por favor, selecciona todos los campos."); return; }
+
+        if (fullData.length === 0) { alert("Aún cargando datos, espera un segundo..."); return; }
+
+        // Filtrar y organizar
+        const yate = fullData.find(i => i['Tipo']?.toLowerCase().includes('yate'));
+        const tours = fullData.filter(i => i['Tipo']?.toLowerCase().includes('tour'));
+
+        let html = `<h3>Tu plan en ${dest} (${nights} noches)</h3>`;
+        let spent = 0;
+
+        for (let i = 1; i <= nights; i++) {
+            if (i % 2 !== 0) { // Día de Actividad
+                let act = (i === 1 && yate) ? yate : tours[(i-1) % tours.length];
+                let cost = parseInt((act?.['Precio'] || '2000').replace(/\D/g,''));
+                spent += cost;
+                html += `<div class="day-block"><strong>Día ${i}:</strong> ${act ? act['Nombre'] : "Tour Privado"} ($${cost.toLocaleString()} MXN)</div>`;
+            } else { // Día de Descanso
+                html += `<div class="day-block"><strong>Día ${i}:</strong> Día de descanso y exploración local en ${dest}.<br>
+                         <a href="https://www.google.com/maps/search/${dest}+mejores+restaurantes" target="_blank" class="map-link">📍 Ver recomendaciones en Google Maps</a></div>`;
+            }
         }
-
-        // Cargar opciones al abrir la página
-        window.addEventListener('DOMContentLoaded', () => {
-            const nights = document.getElementById('nights');
-            for (let i = 2; i <= 30; i++) nights.innerHTML += `<option value="${i}">${i} Noches</option>`;
-            
-            const people = document.getElementById('people');
-            for (let i = 1; i <= 60; i++) people.innerHTML += `<option value="${i}">${i} Personas</option>`;
-            
-            const budget = document.getElementById('budget');
-            for (let i = 2000; i <= 99000; i += 5000) budget.innerHTML += `<option value="${i}">$${i.toLocaleString()} MXN</option>`;
-        });
-
-        function generateItinerary() {
-            const nights = document.getElementById('nights').value;
-            const dest = document.getElementById('dest').value;
-            const budget = document.getElementById('budget').value;
-            
-            // Verificación para evitar NaN
-            if(!nights || !budget) { alert("Por favor selecciona todos los campos"); return; }
-
-            document.getElementById('itinerary-result').innerHTML = `
-                <div class="day-block">
-                    <h4>Itinerario para ${nights} noches en ${dest}</h4>
-                    <p>Calculando presupuesto restante de $${parseInt(budget).toLocaleString()} MXN...</p>
-                    <p>Estamos procesando las mejores experiencias curadas para ti.</p>
-                </div>
-            `;
-        }
-    </script>
+        res.innerHTML = html;
+    }
+</script>
 </body>
 </html>
