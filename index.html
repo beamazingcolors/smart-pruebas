@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <title>Amazing Colors | Itinerario Premium</title>
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #f7f5f0; padding: 20px; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f7f5f0; padding: 20px; color: #04263a; }
         .assistant-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         select, .btn-generate { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; margin-top: 10px; }
         .btn-generate { background: #04263a; color: white; cursor: pointer; font-weight: bold; border: none; }
-        .day-block { background: #fff; padding: 20px; margin-top: 15px; border-left: 5px solid #bd5307; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .day-block { background: #fff; padding: 15px; margin-top: 15px; border-left: 5px solid #bd5307; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -30,45 +30,41 @@
     const TSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9f5_81pPWsXVaJ5uKaifOyjpmSprGKAzEkGh7qMSd5R83cV8UCJeqldoZIb5l3sN8kDEbFoC2NY0s/pub?output=tsv';
     let fullData = [];
 
-    // Función inteligente para buscar el valor de una columna
-    function getValue(item, aliases) {
-        for (let key of aliases) {
-            let foundKey = Object.keys(item).find(k => k.toLowerCase() === key.toLowerCase());
-            if (foundKey) return item[foundKey];
-        }
-        return null;
-    }
-
+    // Cargar datos al iniciar
     async function loadData() {
-        const resp = await fetch(TSV_URL);
-        const text = await resp.text();
-        const rows = text.split('\n').map(r => r.split('\t'));
-        const headers = rows[0].map(h => h.trim());
-        fullData = rows.slice(1).map(row => {
-            let obj = {}; headers.forEach((h, i) => obj[h.trim()] = row[i]?.trim()); return obj;
-        });
-        console.table(fullData); // <--- REVISA ESTO EN LA CONSOLA (F12)
+        try {
+            const resp = await fetch(TSV_URL);
+            const text = await resp.text();
+            const rows = text.split('\n').map(r => r.split('\t'));
+            const headers = rows[0].map(h => h.trim());
+            fullData = rows.slice(1).map(row => {
+                let obj = {}; headers.forEach((h, i) => obj[h.trim()] = row[i]?.trim()); return obj;
+            });
+            console.log("Datos cargados correctamente:", fullData);
+        } catch(e) { alert("Error cargando datos: " + e); }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
         loadData();
         for(let i=2; i<=30; i++) document.getElementById('nights').innerHTML += `<option value="${i}">${i} Noches</option>`;
         for(let i=1; i<=60; i++) document.getElementById('people').innerHTML += `<option value="${i}">${i} Personas</option>`;
-        for(let i=2000; i<=99000; i+=5000) document.getElementById('budget').innerHTML += `<option value="${i}">$${i.toLocaleString()} MXN</option>`;
+        for(let i=2000; i<=99000; i+=5000) document.getElementById('budget').innerHTML += `<option value="${i}">Hasta $${i.toLocaleString()} MXN</option>`;
 
+        // Asignación directa del evento
         document.getElementById('plan-btn').addEventListener('click', generateItinerary);
     });
 
     function generateItinerary() {
         const res = document.getElementById('itinerary-result');
-        const totalBudget = parseInt(document.getElementById('budget').value);
+        const budget = parseInt(document.getElementById('budget').value);
         const nights = parseInt(document.getElementById('nights').value);
         const dest = document.getElementById('dest').value;
 
         if (fullData.length === 0) return alert("Cargando datos... espera un segundo.");
 
-        const yate = fullData.find(i => getValue(i, ['Tipo'])?.toLowerCase().includes('yate'));
-        const tours = fullData.filter(i => getValue(i, ['Tipo'])?.toLowerCase().includes('tour'));
+        // Filtramos buscando las columnas EXACTAS (TIPO, Nombre, Precios)
+        const yate = fullData.find(i => i['TIPO'] && i['TIPO'].toLowerCase().includes('yate'));
+        const tours = fullData.filter(i => i['TIPO'] && i['TIPO'].toLowerCase().includes('tour'));
 
         let html = `<h3>Itinerario en ${dest}</h3>`;
         let spent = 0;
@@ -76,22 +72,19 @@
         for(let i=1; i<=nights; i++) {
             if(i % 2 !== 0) {
                 const act = (i === 1 && yate) ? yate : tours[(i-1) % (tours.length || 1)];
-                const nombre = getValue(act, ['Nombre', 'Tour', 'Actividad']);
-                const precioRaw = getValue(act, ['Precio', 'Costo', 'Valor']);
-                const precio = parseInt((precioRaw || '0').replace(/\D/g,'')) || 2000;
+                const nombre = act ? act['Nombre'] : "Tour Privado";
+                
+                // Leemos 'Precios' (plural) y limpiamos
+                const precioVal = act ? act['Precios'] : "0"; 
+                const precio = parseInt(precioVal.toString().replace(/[^0-9]/g, '')) || 0;
+                
                 spent += precio;
-                html += `<div class="day-block"><strong>Día ${i}:</strong> ${nombre} ($${precio.toLocaleString()} MXN)</div>`;
+                html += `<div class="day-block"><strong>Día ${i}:</strong> ${nombre} <br><small>Costo detectado: $${precio.toLocaleString()} MXN</small></div>`;
             } else {
-                html += `<div class="day-block"><strong>Día ${i}:</strong> Descanso en ${dest}. 
-                         <a href="https://www.google.com/maps/search/${dest}+mejores+restaurantes" target="_blank">📍 Ver mapa</a></div>`;
+                html += `<div class="day-block"><strong>Día ${i}:</strong> Descanso en ${dest}. <a href="https://www.google.com/maps/search/${dest}+restaurantes" target="_blank">📍 Ver mapa</a></div>`;
             }
         }
-        
-        const remaining = totalBudget - spent;
-        html = `<div><p><strong>Presupuesto gastado:</strong> $${spent.toLocaleString()} MXN</p>
-                <p><strong>Restante:</strong> $${remaining.toLocaleString()} MXN</p></div>` + html;
-        
-        res.innerHTML = html;
+        res.innerHTML = html + `<p style="margin-top:20px;"><strong>Total estimado:</strong> $${spent.toLocaleString()} MXN</p>`;
     }
 </script>
 </body>
