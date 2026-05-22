@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casa Búho Dorado | Akumal Exclusive Rental</title>
     
-    <!-- FAVICON IDÉNTICO AL LOGO -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="LLG.png">
 
     <style>
@@ -57,45 +57,37 @@
             transform: translateY(0);
         }
 
-        /* NAVEGACIÓN PREMIUM */
+        /* --- NAVEGACIÓN (MOBILE FIRST) --- */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 25px 4%;
+            padding: 15px 24px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            gap: 20px;
-            z-index: 100;
-            mix-blend-mode: difference;
+            z-index: 1000;
+            background: rgba(17, 17, 17, 0.85); /* Efecto cristal oscuro para móvil */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
         }
 
-        @media (min-width: 768px) {
-            header {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 30px 60px;
-                gap: 0;
-            }
-        }
-
-        /* BOTÓN DE LOGO EQUILIBRADO Y ESTÉTICO */
         .logo-wrapper {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 12px;
             text-decoration: none;
-            gap: 4px;
             background: transparent;
             border: none;
             cursor: pointer;
             outline: none;
+            z-index: 1001;
         }
 
         .logo-img {
-            height: clamp(50px, 6.5vw, 65px);
+            height: clamp(35px, 5vw, 65px);
             width: auto;
             object-fit: contain;
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
@@ -107,34 +99,120 @@
 
         .logo-text {
             font-family: var(--font-sans);
-            font-size: 0.62rem;
-            letter-spacing: 4.5px;
+            font-size: 0.55rem;
+            letter-spacing: 3px;
             color: var(--color-oro);
             text-transform: uppercase;
             font-weight: 500;
+            text-align: left;
         }
 
-        nav {
+        /* BOTÓN MENÚ HAMBURGUESA */
+        .hamburger-btn {
             display: flex;
-            gap: 24px;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 5px;
+        }
+
+        .hamburger-btn span {
+            display: block;
+            width: 28px;
+            height: 1px;
+            background-color: var(--color-arena);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Animación "X" del menú activo */
+        .hamburger-btn.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+            background-color: var(--color-oro);
+        }
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-btn.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+            background-color: var(--color-oro);
+        }
+
+        /* MENÚ DESPLEGABLE MÓVIL */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--color-obsidiana);
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
+            gap: 40px;
+            transform: translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 999;
+        }
+
+        nav.active {
+            transform: translateY(0);
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
             opacity: 0.8;
-            transition: opacity 0.3s ease, color 0.3s ease;
+            transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
         }
 
         nav a:hover {
             color: var(--color-oro);
             opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        /* AJUSTES ESPECÍFICOS PARA PANTALLAS GRANDES (DESKTOP) */
+        @media (min-width: 992px) {
+            header {
+                flex-direction: row;
+                padding: 30px 60px;
+                background: transparent;
+                backdrop-filter: none;
+                border-bottom: none;
+                mix-blend-mode: difference;
+            }
+            .logo-wrapper {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .logo-text {
+                font-size: 0.62rem;
+                letter-spacing: 4.5px;
+                text-align: center;
+            }
+            .hamburger-btn {
+                display: none; /* Ocultamos la hamburguesa en PC */
+            }
+            nav {
+                position: static;
+                height: auto;
+                width: auto;
+                background: transparent;
+                flex-direction: row;
+                transform: none;
+                gap: 24px;
+            }
+            nav a {
+                font-size: 0.7rem;
+                letter-spacing: 2px;
+            }
         }
 
         /* 1. HERO CINEMÁTICO */
@@ -147,11 +225,12 @@
             background: linear-gradient(rgba(17,17,17,0.45), rgba(17,17,17,0.45)), 
                         url('villa_hero.png') center/cover no-repeat;
             text-align: center;
+            padding-top: 80px; /* Evitar choque con header móvil */
         }
 
         .hero h1 {
             font-family: var(--font-serif);
-            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            font-size: clamp(2.2rem, 8vw, 4.5rem);
             line-height: 1.2;
             font-style: italic;
             max-width: 950px;
@@ -161,7 +240,7 @@
             font-size: clamp(0.7rem, 2vw, 0.85rem);
             letter-spacing: 4px;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             opacity: 0.8;
         }
 
@@ -169,7 +248,7 @@
         .premium-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 50px;
             align-items: center;
             text-align: left;
         }
@@ -196,13 +275,13 @@
         }
 
         .grid-text h2 {
-            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
             line-height: 1.3;
             margin-bottom: 30px;
         }
 
         .grid-text p {
-            font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+            font-size: clamp(0.95rem, 2vw, 1.05rem);
             line-height: 1.9;
             font-weight: 300;
         }
@@ -211,7 +290,7 @@
             position: relative;
             overflow: hidden;
             width: 100%;
-            height: clamp(350px, 50vh, 550px);
+            height: clamp(300px, 45vh, 550px);
         }
 
         .grid-image {
@@ -230,7 +309,7 @@
         .acerca-section {
             background-color: #161616;
             color: var(--color-arena);
-            padding: clamp(100px, 12vw, 160px) 0;
+            padding: clamp(80px, 12vw, 160px) 0;
             width: 100%;
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
@@ -247,7 +326,7 @@
         .experiencia-section {
             background-color: var(--color-arena);
             color: var(--color-obsidiana);
-            padding: clamp(100px, 12vw, 160px) 0;
+            padding: clamp(80px, 12vw, 160px) 0;
             width: 100%;
         }
 
@@ -281,7 +360,7 @@
         .split-view {
             position: relative;
             width: 90vw;
-            height: 65vh;
+            height: clamp(40vh, 65vh, 600px);
             max-width: var(--max-width-content);
         }
 
@@ -297,8 +376,8 @@
         }
 
         .blueprint-svg {
-            width: 85%;
-            height: 85%;
+            width: 95%;
+            height: 95%;
             stroke: var(--color-oro);
             stroke-width: 0.8;
             fill: none;
@@ -335,20 +414,22 @@
 
         .section-title {
             position: absolute;
-            top: -55px;
+            top: -45px;
             left: 0;
-            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-size: clamp(1rem, 4vw, 2rem);
             font-style: italic;
             font-family: var(--font-serif);
         }
 
         .meta-panel {
             position: absolute;
-            bottom: -55px;
+            bottom: -45px;
             width: 100%;
             display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
             justify-content: space-between;
-            font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+            font-size: clamp(0.55rem, 2vw, 0.7rem);
             letter-spacing: 2px;
             text-transform: uppercase;
             color: rgba(245, 242, 235, 0.4);
@@ -363,7 +444,7 @@
         }
 
         .concierge-section h2 {
-            font-size: clamp(1.5rem, 3vw, 2.3rem);
+            font-size: clamp(1.5rem, 4vw, 2.3rem);
             margin-bottom: 40px;
             text-align: center;
             font-weight: 400;
@@ -378,7 +459,7 @@
 
         .narrative-form {
             font-family: var(--font-serif);
-            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
             line-height: 2;
             max-width: 850px;
             color: #3a3a3a;
@@ -392,11 +473,14 @@
             font-family: var(--font-serif);
             font-size: inherit;
             color: var(--color-obsidiana);
-            padding: 0 8px;
+            padding: 0 4px;
             outline: none;
             cursor: pointer;
             text-align: center;
             transition: border-color 0.3s ease;
+            margin-bottom: 10px;
+            border-radius: 0; /* Evita bordes redondeados feos en iOS */
+            -webkit-appearance: none; /* Estilo crudo para control total */
         }
 
         .narrative-form select:hover, .narrative-form input:focus {
@@ -406,24 +490,26 @@
         .btn-premium {
             display: inline-block;
             padding: 16px 36px;
-            border: 1px solid var(--color-arena);
+            border: 1px solid var(--color-obsidiana);
             background: transparent;
-            color: var(--color-arena);
+            color: var(--color-obsidiana);
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 3px;
             font-size: 0.75rem;
             cursor: pointer;
             transition: background 0.3s, color 0.3s, transform 0.3s;
+            width: 100%; /* Botón amplio en móvil */
+            max-width: 300px;
         }
 
         .btn-premium:hover {
-            background: var(--color-arena);
-            color: var(--color-obsidiana);
+            background: var(--color-obsidiana);
+            color: var(--color-arena);
             transform: translateY(-2px);
         }
 
-        /* FOOTER BRANDING ACTUALIZADO */
+        /* FOOTER BRANDING */
         footer {
             background-color: #090909;
             padding: 60px 0;
@@ -439,18 +525,26 @@
             text-transform: uppercase;
             text-align: center;
             font-weight: 300;
+            line-height: 1.8;
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
+    <!-- HEADER CON MENÚ HAMBURGUESA -->
     <header>
         <button class="logo-wrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Volver al inicio">
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
             <span class="logo-text">CASA BÚHO DORADO</span>
         </button>
-        <nav>
+        
+        <button class="hamburger-btn" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav id="mobile-menu">
             <a href="#nosotros">Acerca de Nosotros</a>
             <a href="#experiencia">Experiencias</a>
             <a href="#arquitectura">Arquitectura</a>
@@ -473,7 +567,7 @@
                 <div class="grid-text">
                     <span>Acerca de Nosotros</span>
                     <h2>Un Manifiesto de Aislamiento y Distinción</h2>
-                    <p>Nuestra propiedad redefine el estándar de las rentas vacacionales exclusivas en Akumal. Concebida como un santuario arquitectónico de lujo contemporáneo, la villa obsequia a sus huéspedes con vistas impresionante al mar Caribe, donde las transiciones entre el espacio interior y exterior se diluyen por completo. Aquí la tranquilidad no es un añadido conceptual, sino el eje central de la experiencia; un refugio privado pensado para quienes buscan la máxima sofisticación en perfecta comunión con el ritmo natural de la Riviera Maya.</p>
+                    <p>Nuestra propiedad redefine el estándar de las rentas vacacionales exclusivas en Akumal. Concebida como un santuario arquitectónico de lujo contemporáneo, la villa obsequia a sus huéspedes con vistas impresionantes al mar Caribe, donde las transiciones entre el espacio interior y exterior se diluyen por completo. Aquí la tranquilidad no es un añadido conceptual, sino el eje central de la experiencia; un refugio privado pensado para quienes buscan la máxima sofisticación en perfecta comunión con el ritmo natural de la Riviera Maya.</p>
                 </div>
                 <div class="grid-image-wrapper">
                     <img src="exp_sunrise.png" alt="Amanecer en Akumal" class="grid-image">
@@ -554,12 +648,12 @@
                         <option value="1">1 Menor</option>
                         <option value="2" selected>2 Menores</option>
                     </select>, 
-                    planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 140px;" aria-label="Fecha de llegada"> 
+                    planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 140px; text-align: center;" aria-label="Fecha de llegada"> 
                     para entregarnos a la exclusividad de la costa maya.
                 </div>
             </div>
             <div style="text-align: center;">
-                <a href="https://wa.me/529841258758" target="_blank" class="btn-premium" style="margin-top: 50px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud</a>
+                <a href="https://wa.me/529841258758" target="_blank" class="btn-premium" style="margin-top: 50px;">Enviar Solicitud</a>
             </div>
         </div>
     </section>
@@ -568,16 +662,45 @@
     <footer>
         <div class="section-container">
             <div class="footer-brand">
-                CASA BÚHO DORADO - Todos los derechos reservados <span id="current-year">2026</span>
+                CASA BÚHO DORADO <br> Todos los derechos reservados <span id="current-year">2026</span>
             </div>
         </div>
     </footer>
 
-    <!-- INTERACTION & ANIMATION LOGIC -->
+    <!-- LÓGICA DE INTERACCIÓN Y MENÚ MÓVIL -->
     <script>
-        // Actualizar el año automáticamente
+        // Actualizar año automáticamente
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
+        // Control de menú hamburguesa
+        const hamburgerBtn = document.querySelector('.hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuLinks = document.querySelectorAll('#mobile-menu a');
+
+        function toggleMenu() {
+            hamburgerBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            
+            // Prevenir scroll en el fondo cuando el menú está abierto
+            if(mobileMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        hamburgerBtn.addEventListener('click', toggleMenu);
+
+        // Cerrar menú al hacer clic en un enlace
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Reset scroll en recarga
         if (history.scrollRestoration) {
             history.scrollRestoration = 'manual';
         }
@@ -587,14 +710,14 @@
             window.scrollTo(0, 0);
         });
 
+        // Animación de aparición en scroll
         const fadeElements = document.querySelectorAll('.fade-element');
-        
         const appearanceOptions = {
             threshold: 0.15,
             rootMargin: "0px 0px -100px 0px"
         };
 
-        const appearanceObserver = new IntersectionObserver((entries, observer) => {
+        const appearanceObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
@@ -608,6 +731,7 @@
             appearanceObserver.observe(element);
         });
 
+        // Arquitectura track dinámico
         const arquitecturaSection = document.getElementById('arquitectura');
         const renderLayer = document.getElementById('render-layer');
         const progressBar = document.getElementById('progress-bar');
