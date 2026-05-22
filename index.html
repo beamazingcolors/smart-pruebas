@@ -81,7 +81,6 @@
         }
 
         .logo-img {
-            /* Tamaño responsivo dinámico: min 32px, óptimo 4vw, max 42px de alto */
             height: clamp(32px, 4vw, 42px);
             width: auto;
             object-fit: contain;
@@ -343,7 +342,6 @@
     <!-- HEADER CON LOGO LLG.PNG -->
     <header>
         <div class="logo-container">
-            <!-- La ruta relativa apunta directamente a tu archivo en la raíz del repositorio -->
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
         </div>
         <nav>
@@ -437,8 +435,23 @@
         </div>
     </footer>
 
-    <!-- INTERACTION LOGIC -->
+    <!-- INTERACTION & AUTO-RESET LOGIC -->
     <script>
+        // --- CONTROL DE RESET AL RECARGAR ---
+        // Desactiva la restauración automática del scroll del navegador
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        // Fuerza el posicionamiento en el tope superior de inmediato
+        window.scrollTo(0, 0);
+
+        // Seguridad extra ante recargas bruscas
+        window.addEventListener('beforeunload', () => {
+            window.scrollTo(0, 0);
+        });
+
+
+        // --- LOGIC PARA SCROLL CINEMÁTICO ---
         const arquitecturaSection = document.getElementById('arquitectura');
         const renderLayer = document.getElementById('render-layer');
         const progressBar = document.getElementById('progress-bar');
