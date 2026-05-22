@@ -8,6 +8,10 @@
     <!-- FAVICON -->
     <link rel="icon" type="image/png" href="LLG.png">
 
+    <!-- LIBRERÍA DE CALENDARIO PREMIUM (FLATPICKR) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
@@ -43,7 +47,7 @@
             padding: 0 24px;
         }
 
-        /* ANIMACIÓN DE DESVANECIMIENTO ORGÁNICO (SCROLL DE SECCIONES) */
+        /* ANIMACIÓN DE DESVANECIMIENTO ORGÁNICO */
         .fade-element {
             opacity: 0;
             transform: translateY(40px);
@@ -57,7 +61,7 @@
             transform: translateY(0);
         }
 
-        /* --- NAVEGACIÓN CON DESVANECIMIENTO SUTIL --- */
+        /* NAVEGACIÓN CON DESVANECIMIENTO SUTIL */
         header {
             position: fixed;
             top: 0;
@@ -71,19 +75,16 @@
             background: rgba(17, 17, 17, 0.85);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            
-            /* Transición suave para el desvanecimiento */
             transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
                         transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             will-change: opacity, transform;
             opacity: 1;
         }
 
-        /* Clase dinámica controlada por JS cuando se hace scroll hacia abajo */
         header.is-hidden {
             opacity: 0;
             transform: translateY(-10px);
-            pointer-events: none; /* Evita clics accidentales mientras no es visible */
+            pointer-events: none;
         }
 
         .logo-wrapper {
@@ -119,7 +120,6 @@
             text-align: left;
         }
 
-        /* BOTÓN MENÚ HAMBURGUESA */
         .hamburger-btn {
             display: flex;
             flex-direction: column;
@@ -139,7 +139,6 @@
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Animación "X" del menú activo */
         .hamburger-btn.active span:nth-child(1) {
             transform: translateY(7px) rotate(45deg);
             background-color: var(--color-oro);
@@ -152,7 +151,6 @@
             background-color: var(--color-oro);
         }
 
-        /* MENÚ DESPLEGABLE MÓVIL */
         nav {
             position: fixed;
             top: 0;
@@ -190,7 +188,6 @@
             transform: translateY(-2px);
         }
 
-        /* AJUSTES ESPECÍFICOS PARA PANTALLAS GRANDES (DESKTOP) */
         @media (min-width: 992px) {
             header {
                 flex-direction: row;
@@ -201,7 +198,6 @@
                 mix-blend-mode: difference;
             }
             header.is-hidden {
-                /* Mantenemos el mismo comportamiento de desvanecimiento elegante en PC */
                 opacity: 0;
                 transform: translateY(-10px);
                 pointer-events: none;
@@ -484,14 +480,15 @@
             text-align: center;
         }
 
-        .narrative-form select, .narrative-form input {
+        .narrative-form select, 
+        .narrative-form input.datepicker {
             border: none;
             border-bottom: 1px solid rgba(17, 17, 17, 0.25);
             background: transparent;
             font-family: var(--font-serif);
             font-size: inherit;
             color: var(--color-obsidiana);
-            padding: 0 4px;
+            padding: 0 8px;
             outline: none;
             cursor: pointer;
             text-align: center;
@@ -499,10 +496,53 @@
             margin-bottom: 10px;
             border-radius: 0;
             -webkit-appearance: none;
+            appearance: none;
         }
 
-        .narrative-form select:hover, .narrative-form input:focus {
+        /* Ajuste de ancho responsivo para el campo del calendario */
+        .narrative-form input.datepicker {
+            width: clamp(180px, 22vw, 240px);
+        }
+
+        .narrative-form select:hover, 
+        .narrative-form input.datepicker:focus {
             border-bottom-color: var(--color-oro);
+        }
+
+        /* PERSONALIZACIÓN PREMIUM DEL CALENDARIO FLATPICKR (TEMA OBSIDIANA & ORO) */
+        .flatpickr-calendar {
+            background: var(--color-obsidiana) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
+            font-family: var(--font-sans) !important;
+            border-radius: 0px !important;
+        }
+        .flatpickr-months .flatpickr-month, 
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        span.flatpickr-weekday {
+            color: var(--color-arena) !important;
+            fill: var(--color-arena) !important;
+        }
+        .flatpickr-current-month input.numInput.cur-year {
+            color: var(--color-arena) !important;
+        }
+        .flatpickr-day {
+            color: rgba(245, 242, 235, 0.6) !important;
+            border-radius: 0 !important;
+        }
+        .flatpickr-day:hover, .flatpickr-day:focus {
+            background: rgba(214, 175, 55, 0.15) !important;
+            color: var(--color-arena) !important;
+        }
+        .flatpickr-day.selected {
+            background: var(--color-oro) !important;
+            border-color: var(--color-oro) !important;
+            color: var(--color-obsidiana) !important;
+            font-weight: 500;
+        }
+        .flatpickr-months .flatpickr-prev-month svg, 
+        .flatpickr-months .flatpickr-next-month svg {
+            fill: var(--color-oro) !important;
         }
 
         .btn-premium {
@@ -549,7 +589,7 @@
 </head>
 <body>
 
-    <!-- HEADER CON SISTEMA HIDE-ON-SCROLL -->
+    <!-- HEADER CON SISTEMA SCROLL FADE -->
     <header id="main-header">
         <button class="logo-wrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Volver al inicio">
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
@@ -601,7 +641,7 @@
                 <div class="grid-text">
                     <span>La Filosofía del Espacio</span>
                     <h2>Donde la privacidad abraza la inmensidad del océano</h2>
-                    <p>Un entorno curado milimétricamente para albergar legados familiares e historias íntimas. Diseñada para hospedar cómodamente a 8 adultos y 2 menores bajo un estándar de servicio privado y calma absoluta. Un escape del bullicio exterior para adentrarse en la contemplación pura de un rincón caribeño inigualable.</p>
+                    <p>Un entorno curado milimétricamente para albergar legados familiares e historias íntimas. Diseñada para hospedar cómodamente a 8 adultos y 2 menores bajo un estándar de servicio privado y calma absoluta. Un escape del bullicio exterior para adentrarse en la contemplation pura de un rincón caribeño inigualable.</p>
                 </div>
                 <div class="grid-image-wrapper">
                     <img src="villa_finished.png" alt="Villa Concluida" class="grid-image">
@@ -643,7 +683,7 @@
         </div>
     </section>
 
-    <!-- CONCIERGE CONVERSACIONAL (RESERVAR) -->
+    <!-- CONCIERGE CONVERSACIONAL CON CALENDARIO PREMIUM -->
     <section class="concierge-section" id="reserva">
         <div class="section-container">
             <h2>El Comienzo de un Recuerdo</h2>
@@ -666,7 +706,8 @@
                         <option value="1">1 Menor</option>
                         <option value="2" selected>2 Menores</option>
                     </select>, 
-                    planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 140px; text-align: center;" aria-label="Fecha de llegada"> 
+                    planeando nuestro escape el día 
+                    <input type="text" class="datepicker" id="fecha-escape" placeholder="Seleccionar Fecha" aria-label="Fecha de llegada" readonly> 
                     para entregarnos a la exclusividad de la costa maya.
                 </div>
             </div>
@@ -676,7 +717,7 @@
         </div>
     </section>
 
-    <!-- FOOTER CON DERECHOS Y AÑO DINÁMICO -->
+    <!-- FOOTER -->
     <footer>
         <div class="section-container">
             <div class="footer-brand">
@@ -690,6 +731,13 @@
         // Actualizar año automáticamente
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
+        // Inicialización del Calendario Exclusivo (Flatpickr)
+        flatpickr(".datepicker", {
+            dateFormat: "d / m / Y",
+            minDate: "today", 
+            disableMobile: "true" // Obliga a dispositivos móviles a usar el precioso tema oscuro personalizado
+        });
+
         // Control de menú hamburguesa
         const hamburgerBtn = document.querySelector('.hamburger-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -702,7 +750,7 @@
             
             if(mobileMenu.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
-                mainHeader.classList.remove('is-hidden'); // Asegura que se vea al abrirse
+                mainHeader.classList.remove('is-hidden'); 
             } else {
                 document.body.style.overflow = '';
             }
@@ -718,9 +766,8 @@
             });
         });
 
-        // --- DETECTAR SCROLL PARA DESVANECER LA BARRA SUPERIOR ---
+        // DETECTAR SCROLL PARA DESVANECER LA BARRA SUPERIOR
         window.addEventListener('scroll', () => {
-            // Solo desvanece si el menú móvil NO está activo
             if (!mobileMenu.classList.contains('active')) {
                 if (window.scrollY > 50) {
                     mainHeader.classList.add('is-hidden');
@@ -761,7 +808,7 @@
             appearanceObserver.observe(element);
         });
 
-        // Arquitectura track dinámico
+        // Track de arquitectura interactiva
         const arquitecturaSection = document.getElementById('arquitectura');
         const renderLayer = document.getElementById('render-layer');
         const progressBar = document.getElementById('progress-bar');
