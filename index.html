@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casa Búho Dorado | Akumal Exclusive Rental</title>
     
-    <!-- FAVICON (Logo LLG desde la raíz del repositorio) -->
+    <!-- FAVICON (Logo LLG.png) -->
     <link rel="icon" type="image/png" href="LLG.png">
 
     <style>
@@ -36,30 +36,38 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* DISEÑO RESPONSIVO & CENTRADO ALINEADO */
         .section-container {
             width: 100%;
             max-width: var(--max-width-content);
             margin: 0 auto;
             padding: 0 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
         }
 
-        /* NAVEGACIÓN PREMIUM COMPACTA */
+        /* ANIMACIÓN DE DESVANECIMIENTO ORGÁNICO (SCROLL) */
+        .fade-element {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 1.4s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, transform;
+        }
+
+        .fade-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* NAVEGACIÓN PREMIUM EXPANDIDA */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 30px 4%;
+            padding: 25px 4%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 25px;
             z-index: 100;
             mix-blend-mode: difference;
         }
@@ -68,34 +76,51 @@
             header {
                 flex-direction: row;
                 justify-content: space-between;
-                padding: 40px 60px;
+                padding: 35px 60px;
                 gap: 0;
             }
         }
 
-        /* Contenedor Estético del Logo LLG */
-        .logo-container {
+        /* BOTÓN DE LOGO MAXIMIZADO Y VISIBLE */
+        .logo-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            text-decoration: none;
+            gap: 10px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
         }
 
         .logo-img {
-            height: clamp(32px, 4vw, 42px);
+            /* Escalado superior para máxima visibilidad solicitado */
+            height: clamp(75px, 9vw, 95px);
             width: auto;
             object-fit: contain;
-            transition: transform 0.4s ease;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .logo-img:hover {
-            transform: scale(1.05);
+        .logo-wrapper:hover .logo-img {
+            transform: scale(1.04);
+        }
+
+        .logo-text {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: var(--color-oro);
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         nav {
             display: flex;
-            gap: 25px;
+            gap: 24px;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         nav a {
@@ -112,15 +137,17 @@
             opacity: 0.5;
         }
 
-        /* 1. HERO CINEMÁTICO CENTRADO */
+        /* 1. HERO CINEMÁTICO CON IMAGEN LOCAL */
         .hero {
             height: 100vh;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(17,17,17,0.4), rgba(17,17,17,0.4)), 
-                        url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            /* Imagen de fondo actualizada */
+            background: linear-gradient(rgba(17,17,17,0.45), rgba(17,17,17,0.45)), 
+                        url('villa_hero.png') center/cover no-repeat;
+            text-align: center;
         }
 
         .hero h1 {
@@ -129,7 +156,6 @@
             line-height: 1.2;
             margin-bottom: 30px;
             font-style: italic;
-            font-weight: 400;
             max-width: 950px;
         }
 
@@ -141,57 +167,101 @@
             opacity: 0.8;
         }
 
-        .btn-premium {
-            padding: 16px 36px;
-            border: 1px solid var(--color-arena);
-            background: transparent;
-            color: var(--color-arena);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s, transform 0.3s;
+        /* ESTRUCTURA ASIMÉTRICA PARA SECCIONES CON IMAGEN */
+        .premium-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+            text-align: left;
         }
 
-        .btn-premium:hover {
-            background: var(--color-arena);
-            color: var(--color-obsidiana);
-            transform: translateY(-2px);
+        @media (min-width: 992px) {
+            .premium-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 80px;
+            }
+            .premium-grid.reverse {
+                direction: rtl;
+            }
+            .premium-grid.reverse .grid-text {
+                direction: ltr;
+            }
         }
 
-        /* 2. LA NARRATIVA (FACTOR HUMANO) */
-        .experiencia {
-            background-color: var(--color-arena);
-            color: var(--color-obsidiana);
-            padding: clamp(80px, 12vw, 150px) 0;
-            width: 100%;
-        }
-
-        .experiencia span {
+        .grid-text span {
             font-size: 0.7rem;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: #777;
             margin-bottom: 20px;
             display: block;
         }
 
-        .experiencia h2 {
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            max-width: 800px;
+        .grid-text h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
             line-height: 1.3;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
-        .experiencia p {
-            font-size: clamp(0.95rem, 2vw, 1.1rem);
-            line-height: 1.8;
-            max-width: 650px;
-            color: #333;
+        .grid-text p {
+            font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+            line-height: 1.9;
             font-weight: 300;
         }
 
-        /* 3. ARQUITECTURA CAMBIANTE RESPONSIVA */
+        .grid-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: clamp(350px, 50vh, 550px);
+        }
+
+        .grid-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(15%);
+            transition: transform 0.8s ease;
+        }
+
+        .grid-image-wrapper:hover .grid-image {
+            transform: scale(1.03);
+        }
+
+        /* 2. SECCIÓN: ACERCA DE NOSOTROS */
+        .acerca-section {
+            background-color: #161616;
+            color: var(--color-arena);
+            padding: clamp(100px, 12vw, 160px) 0;
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .acerca-section .grid-text span {
+            color: var(--color-oro);
+        }
+
+        .acerca-section .grid-text p {
+            color: rgba(245, 242, 235, 0.8);
+        }
+
+        /* 3. SECCIÓN: EXPERIENCIAS */
+        .experiencia-section {
+            background-color: var(--color-arena);
+            color: var(--color-obsidiana);
+            padding: clamp(100px, 12vw, 160px) 0;
+            width: 100%;
+        }
+
+        .experiencia-section .grid-text span {
+            color: #666;
+        }
+
+        .experiencia-section .grid-text p {
+            color: #333;
+        }
+
+        /* 4. TRACK DE ARQUITECTURA CAMBIANTE */
         .arquitectura-track {
             position: relative;
             height: 250vh;
@@ -286,7 +356,7 @@
             color: rgba(245, 242, 235, 0.4);
         }
 
-        /* 4. CONCIERGE DIGITAL CONVERSACIONAL */
+        /* 5. CONCIERGE DIGITAL CONVERSACIONAL */
         .concierge-section {
             background-color: var(--color-arena);
             color: var(--color-obsidiana);
@@ -297,6 +367,13 @@
         .concierge-section h2 {
             font-size: clamp(1.8rem, 4vw, 3rem);
             margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .narrative-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
 
         .narrative-form {
@@ -305,6 +382,7 @@
             line-height: 1.8;
             max-width: 900px;
             color: #555;
+            text-align: center;
         }
 
         .narrative-form select, .narrative-form input {
@@ -320,7 +398,7 @@
             text-align: center;
         }
 
-        /* FOOTER BRANDING NANO BANANA */
+        /* FOOTER BRANDING */
         footer {
             background-color: #090909;
             padding: 60px 0;
@@ -334,24 +412,27 @@
             letter-spacing: 5px;
             color: rgba(255,255,255,0.2);
             text-transform: uppercase;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER CON LOGO LLG.PNG -->
+    <!-- HEADER CON LOGO INTERACTIVO Y LEYENDA -->
     <header>
-        <div class="logo-container">
+        <button class="logo-wrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Volver al inicio">
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
-        </div>
+            <span class="logo-text">CASA BÚHO DORADO</span>
+        </button>
         <nav>
-            <a href="#experiencia">Experiencia</a>
+            <a href="#nosotros">Acerca de Nosotros</a>
+            <a href="#experiencia">Experiencias</a>
             <a href="#arquitectura">Arquitectura</a>
             <a href="#reserva">Reservar</a>
         </nav>
     </header>
 
-    <!-- MAIN HERO -->
+    <!-- MAIN HERO (CON VILLA_HERO.PNG) -->
     <section class="hero">
         <div class="section-container">
             <p>Akumal, Quintana Roo</p>
@@ -360,12 +441,35 @@
         </div>
     </section>
 
-    <!-- EXPERIENCIA NARRATIVA CENTRADA -->
-    <section class="experiencia" id="experiencia">
-        <div class="section-container">
-            <span>Casa Búho Dorado</span>
-            <h2>Donde la privacidad abraza la inmensidad del Caribe</h2>
-            <p>Un refugio contemporáneo meticulosamente integrado con la naturaleza de Akumal. Concebido exclusivamente para albergar a 8 adultos y 2 menores bajo una atmósfera de lujo silencioso, calma orgánica y absoluto aislamiento.</p>
+    <!-- SECCIÓN: ACERCA DE NOSOTROS (FADE-OUT CON IMAGEN EXP_SUNRISE.PNG) -->
+    <section class="acerca-section" id="nosotros">
+        <div class="section-container fade-element">
+            <div class="premium-grid">
+                <div class="grid-text">
+                    <span>Acerca de Nosotros</span>
+                    <h2>Un Manifiesto de Aislamiento y Distinción</h2>
+                    <p>Nuestra propiedad redefine el estándar de las rentas vacacionales exclusivas en Akumal. Concebida como un santuario arquitectónico de lujo contemporáneo, la villa obsequia a sus huéspedes con vistas impresionante al mar Caribe, donde las transiciones entre el espacio interior y exterior se diluyen por completo. Aquí la tranquilidad no es un añadido conceptual, sino el eje central de la experiencia; un refugio privado pensado para quienes buscan la máxima sofisticación en perfecta comunión con el ritmo natural de la Riviera Maya.</p>
+                </div>
+                <div class="grid-image-wrapper">
+                    <img src="exp_sunrise.png" alt="Amanecer en Akumal" class="grid-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: EXPERIENCIAS (FADE-OUT CON IMAGEN VILLA_FINISHED.PNG) -->
+    <section class="experiencia-section" id="experiencia">
+        <div class="section-container fade-element">
+            <div class="premium-grid reverse">
+                <div class="grid-text">
+                    <span>La Filosofía del Espacio</span>
+                    <h2>Donde la privacidad abraza la inmensidad del océano</h2>
+                    <p>Un entorno curado milimétricamente para albergar legados familiares e historias íntimas. Diseñada para hospedar cómodamente a 8 adultos y 2 menores bajo un estándar de servicio privado y calma absoluta. Un escape del bullicio exterior para adentrarse en la contemplación pura de un rincón caribeño inigualable.</p>
+                </div>
+                <div class="grid-image-wrapper">
+                    <img src="villa_finished.png" alt="Villa Concluida" class="grid-image">
+                </div>
+            </div>
         </div>
     </section>
 
@@ -409,22 +513,26 @@
     <section class="concierge-section" id="reserva">
         <div class="section-container">
             <h2>El Comienzo de un Recuerdo</h2>
-            <div class="narrative-form">
-                Deseamos reservar la villa para 
-                <select>
-                    <option>8 Adultos</option>
-                    <option>6 Adultos</option>
-                    <option>4 Adultos</option>
-                </select> 
-                junto a 
-                <select>
-                    <option>2 Menores</option>
-                    <option>0 Menores</option>
-                </select>, 
-                planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 160px;"> 
-                para entregarnos a la exclusividad de la costa maya.
+            <div class="narrative-container">
+                <div class="narrative-form">
+                    Deseamos reservar la villa para 
+                    <select>
+                        <option>8 Adultos</option>
+                        <option>6 Adultos</option>
+                        <option>4 Adultos</option>
+                    </select> 
+                    junto a 
+                    <select>
+                        <option>2 Menores</option>
+                        <option>0 Menores</option>
+                    </select>, 
+                    planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 160px;"> 
+                    para entregarnos a la exclusividad de la costa maya.
+                </div>
             </div>
-            <button class="btn-premium" style="margin-top: 60px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud Privada</button>
+            <div style="text-align: center;">
+                <button class="btn-premium" style="margin-top: 60px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud Privada</button>
+            </div>
         </div>
     </section>
 
@@ -435,23 +543,43 @@
         </div>
     </footer>
 
-    <!-- INTERACTION & AUTO-RESET LOGIC -->
+    <!-- INTERACTION, ANIMATION & AUTO-RESET LOGIC -->
     <script>
         // --- CONTROL DE RESET AL RECARGAR ---
-        // Desactiva la restauración automática del scroll del navegador
         if (history.scrollRestoration) {
             history.scrollRestoration = 'manual';
         }
-        // Fuerza el posicionamiento en el tope superior de inmediato
         window.scrollTo(0, 0);
 
-        // Seguridad extra ante recargas bruscas
         window.addEventListener('beforeunload', () => {
             window.scrollTo(0, 0);
         });
 
+        // --- INTERSECTION OBSERVER PARA EFECTO DESVANECIDO EN SCROLL ---
+        const fadeElements = document.querySelectorAll('.fade-element');
+        
+        const appearanceOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -100px 0px"
+        };
 
-        // --- LOGIC PARA SCROLL CINEMÁTICO ---
+        const appearanceObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                } else {
+                    // Remueve la clase al salir para lograr el efecto de desvanecimiento continuo al hacer scroll hacia arriba/abajo
+                    entry.target.classList.remove('is-visible');
+                }
+            });
+        }, appearanceOptions);
+
+        fadeElements.forEach(element => {
+            appearanceObserver.observe(element);
+        });
+
+
+        // --- SCROLL CINEMÁTICO (ARQUITECTURA VIVA) ---
         const arquitecturaSection = document.getElementById('arquitectura');
         const renderLayer = document.getElementById('render-layer');
         const progressBar = document.getElementById('progress-bar');
@@ -466,7 +594,6 @@
             if (currentProgress >= 0 && currentProgress <= totalScrollable) {
                 const pct = currentProgress / totalScrollable;
                 
-                // Efecto de barrido suave (revelado lateral de la imagen real)
                 renderLayer.style.clipPath = `inset(0 ${(1 - pct) * 100}% 0 0)`;
                 progressBar.style.height = `${pct * 100}%`;
                 
