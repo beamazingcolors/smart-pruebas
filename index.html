@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casa Búho Dorado | Akumal Exclusive Rental</title>
     
-    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="LLG.png">
 
-    <!-- LIBRERÍA DE CALENDARIO PREMIUM (FLATPICKR) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -499,7 +497,6 @@
             appearance: none;
         }
 
-        /* Ajuste de ancho responsivo para el campo del calendario */
         .narrative-form input.datepicker {
             width: clamp(180px, 22vw, 240px);
         }
@@ -509,7 +506,43 @@
             border-bottom-color: var(--color-oro);
         }
 
-        /* PERSONALIZACIÓN PREMIUM DEL CALENDARIO FLATPICKR (TEMA OBSIDIANA & ORO) */
+        /* CONTENEDOR DE BOTONES DEL CONCIERGE */
+        .concierge-buttons-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .btn-premium {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 36px;
+            border: 1px solid var(--color-obsidiana);
+            background: transparent;
+            color: var(--color-obsidiana);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.75rem;
+            font-family: var(--font-sans);
+            font-weight: 400;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .btn-premium:hover {
+            background: var(--color-obsidiana);
+            color: var(--color-arena);
+            transform: translateY(-2px);
+        }
+
+        /* PERSONALIZACIÓN PREMIUM DEL CALENDARIO FLATPICKR */
         .flatpickr-calendar {
             background: var(--color-obsidiana) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -545,28 +578,6 @@
             fill: var(--color-oro) !important;
         }
 
-        .btn-premium {
-            display: inline-block;
-            padding: 16px 36px;
-            border: 1px solid var(--color-obsidiana);
-            background: transparent;
-            color: var(--color-obsidiana);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s, transform 0.3s;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .btn-premium:hover {
-            background: var(--color-obsidiana);
-            color: var(--color-arena);
-            transform: translateY(-2px);
-        }
-
         /* FOOTER BRANDING */
         footer {
             background-color: #090909;
@@ -589,7 +600,6 @@
 </head>
 <body>
 
-    <!-- HEADER CON SISTEMA SCROLL FADE -->
     <header id="main-header">
         <button class="logo-wrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Volver al inicio">
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
@@ -610,7 +620,6 @@
         </nav>
     </header>
 
-    <!-- MAIN HERO -->
     <section class="hero">
         <div class="section-container">
             <p>Akumal, Quintana Roo</p>
@@ -618,7 +627,6 @@
         </div>
     </section>
 
-    <!-- SECCIÓN: ACERCA DE NOSOTROS -->
     <section class="acerca-section" id="nosotros">
         <div class="section-container fade-element">
             <div class="premium-grid">
@@ -634,7 +642,6 @@
         </div>
     </section>
 
-    <!-- SECCIÓN: EXPERIENCIAS -->
     <section class="experiencia-section" id="experiencia">
         <div class="section-container fade-element">
             <div class="premium-grid reverse">
@@ -650,7 +657,6 @@
         </div>
     </section>
 
-    <!-- TRACK DE ARQUITECTURA CAMBIANTE -->
     <section class="arquitectura-track" id="arquitectura">
         <div class="sticky-scene">
             <div class="split-view">
@@ -683,14 +689,13 @@
         </div>
     </section>
 
-    <!-- CONCIERGE CONVERSACIONAL CON CALENDARIO PREMIUM -->
     <section class="concierge-section" id="reserva">
         <div class="section-container">
             <h2>El Comienzo de un Recuerdo</h2>
             <div class="narrative-container">
                 <div class="narrative-form">
                     Deseamos reservar la villa para 
-                    <select aria-label="Cantidad de adultos">
+                    <select id="select-adultos" aria-label="Cantidad de adultos">
                         <option value="1">1 Adulto</option>
                         <option value="2">2 Adultos</option>
                         <option value="3">3 Adultos</option>
@@ -701,7 +706,7 @@
                         <option value="8" selected>8 Adultos</option>
                     </select> 
                     junto a 
-                    <select aria-label="Cantidad de menores">
+                    <select id="select-menores" aria-label="Cantidad de menores">
                         <option value="0">0 Menores</option>
                         <option value="1">1 Menor</option>
                         <option value="2" selected>2 Menores</option>
@@ -711,13 +716,14 @@
                     para entregarnos a la exclusividad de la costa maya.
                 </div>
             </div>
-            <div style="text-align: center;">
-                <a href="https://wa.me/529841258758" target="_blank" class="btn-premium" style="margin-top: 50px;">Enviar Solicitud</a>
+            
+            <div class="concierge-buttons-group">
+                <button type="button" id="btn-enviar-email" class="btn-premium">Enviar Solicitud</button>
+                <a href="https://wa.me/529841258758" target="_blank" class="btn-premium">WhatsApp</a>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="section-container">
             <div class="footer-brand">
@@ -726,7 +732,6 @@
         </div>
     </footer>
 
-    <!-- INTERACTION & SCROLL LOGIC -->
     <script>
         // Actualizar año automáticamente
         document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -735,7 +740,29 @@
         flatpickr(".datepicker", {
             dateFormat: "d / m / Y",
             minDate: "today", 
-            disableMobile: "true" // Obliga a dispositivos móviles a usar el precioso tema oscuro personalizado
+            disableMobile: "true" 
+        });
+
+        // ENVÍO DE FORMULARIO POR CORREO ELECTRÓNICO
+        document.getElementById('btn-enviar-email').addEventListener('click', () => {
+            const adultos = document.getElementById('select-adultos').value;
+            const menores = document.getElementById('select-menores').value;
+            const fecha = document.getElementById('fecha-escape').value;
+
+            if (!fecha || fecha === "Seleccionar Fecha") {
+                alert("Por favor, seleccione una fecha para su escape antes de enviar la solicitud.");
+                return;
+            }
+
+            // Configura aquí tu dirección de correo electrónico de destino
+            const correoDestino = "info@casabuhodorado.com"; 
+            const asunto = encodeURIComponent("Nueva Solicitud de Reserva - Casa Búho Dorado");
+            
+            const mensajeCuerpo = `Deseamos reservar la villa para ${adultos} junto a ${menores}, planeando nuestro escape el día ${fecha} para entregarnos a la exclusividad de la costa maya.`;
+            const cuerpo = encodeURIComponent(mensajeCuerpo);
+
+            // Abre el gestor de correo nativo del usuario con el texto prellenado
+            window.location.href = `mailto:${correoDestino}?subject=${asunto}&body=${cuerpo}`;
         });
 
         // Control de menú hamburguesa
