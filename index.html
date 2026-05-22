@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casa Búho Dorado | Akumal Exclusive Rental</title>
     
-    <!-- FAVICON (Logo LLG.png) -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="LLG.png">
 
     <style>
@@ -46,7 +46,7 @@
         /* ANIMACIÓN DE DESVANECIMIENTO ORGÁNICO (SCROLL) */
         .fade-element {
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(40px);
             transition: opacity 1.4s cubic-bezier(0.25, 1, 0.5, 1), 
                         transform 1.4s cubic-bezier(0.25, 1, 0.5, 1);
             will-change: opacity, transform;
@@ -57,7 +57,7 @@
             transform: translateY(0);
         }
 
-        /* NAVEGACIÓN PREMIUM EXPANDIDA */
+        /* NAVEGACIÓN PREMIUM */
         header {
             position: fixed;
             top: 0;
@@ -67,7 +67,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
             z-index: 100;
             mix-blend-mode: difference;
         }
@@ -76,18 +76,18 @@
             header {
                 flex-direction: row;
                 justify-content: space-between;
-                padding: 35px 60px;
+                padding: 30px 60px;
                 gap: 0;
             }
         }
 
-        /* BOTÓN DE LOGO MAXIMIZADO Y VISIBLE */
+        /* BOTÓN DE LOGO EQUILIBRADO Y ESTÉTICO */
         .logo-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            gap: 10px;
+            gap: 4px;
             background: transparent;
             border: none;
             cursor: pointer;
@@ -95,21 +95,20 @@
         }
 
         .logo-img {
-            /* Escalado superior para máxima visibilidad solicitado */
-            height: clamp(75px, 9vw, 95px);
+            height: clamp(50px, 6.5vw, 65px);
             width: auto;
             object-fit: contain;
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .logo-wrapper:hover .logo-img {
-            transform: scale(1.04);
+            transform: scale(1.03);
         }
 
         .logo-text {
             font-family: var(--font-sans);
-            font-size: 0.7rem;
-            letter-spacing: 5px;
+            font-size: 0.62rem;
+            letter-spacing: 4.5px;
             color: var(--color-oro);
             text-transform: uppercase;
             font-weight: 500;
@@ -130,21 +129,21 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             opacity: 0.8;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, color 0.3s ease;
         }
 
         nav a:hover {
-            opacity: 0.5;
+            color: var(--color-oro);
+            opacity: 1;
         }
 
-        /* 1. HERO CINEMÁTICO CON IMAGEN LOCAL */
+        /* 1. HERO CINEMÁTICO */
         .hero {
             height: 100vh;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Imagen de fondo actualizada */
             background: linear-gradient(rgba(17,17,17,0.45), rgba(17,17,17,0.45)), 
                         url('villa_hero.png') center/cover no-repeat;
             text-align: center;
@@ -154,7 +153,6 @@
             font-family: var(--font-serif);
             font-size: clamp(2.2rem, 6vw, 4.5rem);
             line-height: 1.2;
-            margin-bottom: 30px;
             font-style: italic;
             max-width: 950px;
         }
@@ -163,11 +161,11 @@
             font-size: clamp(0.7rem, 2vw, 0.85rem);
             letter-spacing: 4px;
             text-transform: uppercase;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             opacity: 0.8;
         }
 
-        /* ESTRUCTURA ASIMÉTRICA PARA SECCIONES CON IMAGEN */
+        /* ESTRUCTURA ASIMÉTRICA */
         .premium-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -225,7 +223,7 @@
         }
 
         .grid-image-wrapper:hover .grid-image {
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
         /* 2. SECCIÓN: ACERCA DE NOSOTROS */
@@ -356,18 +354,20 @@
             color: rgba(245, 242, 235, 0.4);
         }
 
-        /* 5. CONCIERGE DIGITAL CONVERSACIONAL */
+        /* 5. CONCIERGE DIGITAL (RESERVAR) REFINADO */
         .concierge-section {
             background-color: var(--color-arena);
             color: var(--color-obsidiana);
-            padding: 100px 0;
+            padding: clamp(80px, 10vw, 120px) 0;
             width: 100%;
         }
 
         .concierge-section h2 {
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            margin-bottom: 50px;
+            font-size: clamp(1.5rem, 3vw, 2.3rem);
+            margin-bottom: 40px;
             text-align: center;
+            font-weight: 400;
+            letter-spacing: 1px;
         }
 
         .narrative-container {
@@ -378,24 +378,48 @@
 
         .narrative-form {
             font-family: var(--font-serif);
-            font-size: clamp(1.3rem, 3.5vw, 2.2rem);
-            line-height: 1.8;
-            max-width: 900px;
-            color: #555;
+            /* Escala optimizada para mayor sutileza y elegancia */
+            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            line-height: 2;
+            max-width: 850px;
+            color: #3a3a3a;
             text-align: center;
         }
 
         .narrative-form select, .narrative-form input {
             border: none;
-            border-bottom: 1px solid var(--color-obsidiana);
+            border-bottom: 1px solid rgba(17, 17, 17, 0.25);
             background: transparent;
             font-family: var(--font-serif);
             font-size: inherit;
             color: var(--color-obsidiana);
-            padding: 0 5px;
+            padding: 0 8px;
             outline: none;
             cursor: pointer;
             text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .narrative-form select:hover, .narrative-form input:focus {
+            border-bottom-color: var(--color-oro);
+        }
+
+        .btn-premium {
+            padding: 16px 36px;
+            border: 1px solid var(--color-arena);
+            background: transparent;
+            color: var(--color-arena);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .btn-premium:hover {
+            background: var(--color-arena);
+            color: var(--color-obsidiana);
+            transform: translateY(-2px);
         }
 
         /* FOOTER BRANDING */
@@ -418,7 +442,7 @@
 </head>
 <body>
 
-    <!-- HEADER CON LOGO INTERACTIVO Y LEYENDA -->
+    <!-- HEADER CON LOGO REEQUILIBRADO -->
     <header>
         <button class="logo-wrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Volver al inicio">
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
@@ -432,16 +456,15 @@
         </nav>
     </header>
 
-    <!-- MAIN HERO (CON VILLA_HERO.PNG) -->
+    <!-- MAIN HERO (BOTÓN REMOVIDO) -->
     <section class="hero">
         <div class="section-container">
             <p>Akumal, Quintana Roo</p>
             <h1>“We are not hosts, we are memory makers.”</h1>
-            <button class="btn-premium" onclick="document.getElementById('reserva').scrollIntoView();">Diseñar Estancia</button>
         </div>
     </section>
 
-    <!-- SECCIÓN: ACERCA DE NOSOTROS (FADE-OUT CON IMAGEN EXP_SUNRISE.PNG) -->
+    <!-- SECCIÓN: ACERCA DE NOSOTROS -->
     <section class="acerca-section" id="nosotros">
         <div class="section-container fade-element">
             <div class="premium-grid">
@@ -457,7 +480,7 @@
         </div>
     </section>
 
-    <!-- SECCIÓN: EXPERIENCIAS (FADE-OUT CON IMAGEN VILLA_FINISHED.PNG) -->
+    <!-- SECCIÓN: EXPERIENCIAS -->
     <section class="experiencia-section" id="experiencia">
         <div class="section-container fade-element">
             <div class="premium-grid reverse">
@@ -509,29 +532,35 @@
         </div>
     </section>
 
-    <!-- CONCIERGE CONVERSACIONAL -->
+    <!-- CONCIERGE CONVERSACIONAL (RESERVAR) -->
     <section class="concierge-section" id="reserva">
         <div class="section-container">
             <h2>El Comienzo de un Recuerdo</h2>
             <div class="narrative-container">
                 <div class="narrative-form">
                     Deseamos reservar la villa para 
-                    <select>
-                        <option>8 Adultos</option>
-                        <option>6 Adultos</option>
-                        <option>4 Adultos</option>
+                    <select aria-label="Cantidad de adultos">
+                        <option value="1">1 Adulto</option>
+                        <option value="2">2 Adultos</option>
+                        <option value="3">3 Adultos</option>
+                        <option value="4">4 Adultos</option>
+                        <option value="5">5 Adultos</option>
+                        <option value="6">6 Adultos</option>
+                        <option value="7">7 Adultos</option>
+                        <option value="8" selected>8 Adultos</option>
                     </select> 
                     junto a 
-                    <select>
-                        <option>2 Menores</option>
-                        <option>0 Menores</option>
+                    <select aria-label="Cantidad de menores">
+                        <option value="0">0 Menores</option>
+                        <option value="1">1 Menor</option>
+                        <option value="2" selected>2 Menores</option>
                     </select>, 
-                    planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 160px;"> 
+                    planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 140px;" aria-label="Fecha de llegada"> 
                     para entregarnos a la exclusividad de la costa maya.
                 </div>
             </div>
             <div style="text-align: center;">
-                <button class="btn-premium" style="margin-top: 60px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud Privada</button>
+                <button class="btn-premium" style="margin-top: 50px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud Privada</button>
             </div>
         </div>
     </section>
@@ -568,7 +597,6 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
                 } else {
-                    // Remueve la clase al salir para lograr el efecto de desvanecimiento continuo al hacer scroll hacia arriba/abajo
                     entry.target.classList.remove('is-visible');
                 }
             });
