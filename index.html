@@ -43,7 +43,7 @@
             padding: 0 24px;
         }
 
-        /* ANIMACIÓN DE DESVANECIMIENTO ORGÁNICO (SCROLL) */
+        /* ANIMACIÓN DE DESVANECIMIENTO ORGÁNICO (SCROLL DE SECCIONES) */
         .fade-element {
             opacity: 0;
             transform: translateY(40px);
@@ -57,7 +57,7 @@
             transform: translateY(0);
         }
 
-        /* --- NAVEGACIÓN (MOBILE FIRST) --- */
+        /* --- NAVEGACIÓN CON DESVANECIMIENTO SUTIL --- */
         header {
             position: fixed;
             top: 0;
@@ -68,10 +68,22 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: rgba(17, 17, 17, 0.85); /* Efecto cristal oscuro para móvil */
+            background: rgba(17, 17, 17, 0.85);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s ease;
+            
+            /* Transición suave para el desvanecimiento */
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, transform;
+            opacity: 1;
+        }
+
+        /* Clase dinámica controlada por JS cuando se hace scroll hacia abajo */
+        header.is-hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none; /* Evita clics accidentales mientras no es visible */
         }
 
         .logo-wrapper {
@@ -188,6 +200,12 @@
                 border-bottom: none;
                 mix-blend-mode: difference;
             }
+            header.is-hidden {
+                /* Mantenemos el mismo comportamiento de desvanecimiento elegante en PC */
+                opacity: 0;
+                transform: translateY(-10px);
+                pointer-events: none;
+            }
             .logo-wrapper {
                 flex-direction: column;
                 gap: 4px;
@@ -198,7 +216,7 @@
                 text-align: center;
             }
             .hamburger-btn {
-                display: none; /* Ocultamos la hamburguesa en PC */
+                display: none;
             }
             nav {
                 position: static;
@@ -225,7 +243,7 @@
             background: linear-gradient(rgba(17,17,17,0.45), rgba(17,17,17,0.45)), 
                         url('villa_hero.png') center/cover no-repeat;
             text-align: center;
-            padding-top: 80px; /* Evitar choque con header móvil */
+            padding-top: 80px;
         }
 
         .hero h1 {
@@ -479,8 +497,8 @@
             text-align: center;
             transition: border-color 0.3s ease;
             margin-bottom: 10px;
-            border-radius: 0; /* Evita bordes redondeados feos en iOS */
-            -webkit-appearance: none; /* Estilo crudo para control total */
+            border-radius: 0;
+            -webkit-appearance: none;
         }
 
         .narrative-form select:hover, .narrative-form input:focus {
@@ -499,7 +517,7 @@
             font-size: 0.75rem;
             cursor: pointer;
             transition: background 0.3s, color 0.3s, transform 0.3s;
-            width: 100%; /* Botón amplio en móvil */
+            width: 100%;
             max-width: 300px;
         }
 
@@ -531,8 +549,8 @@
 </head>
 <body>
 
-    <!-- HEADER CON MENÚ HAMBURGUESA -->
-    <header>
+    <!-- HEADER CON SISTEMA HIDE-ON-SCROLL -->
+    <header id="main-header">
         <button class="logo-wrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Volver al inicio">
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
             <span class="logo-text">CASA BÚHO DORADO</span>
@@ -667,7 +685,7 @@
         </div>
     </footer>
 
-    <!-- LÓGICA DE INTERACCIÓN Y MENÚ MÓVIL -->
+    <!-- INTERACTION & SCROLL LOGIC -->
     <script>
         // Actualizar año automáticamente
         document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -676,14 +694,15 @@
         const hamburgerBtn = document.querySelector('.hamburger-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuLinks = document.querySelectorAll('#mobile-menu a');
+        const mainHeader = document.getElementById('main-header');
 
         function toggleMenu() {
             hamburgerBtn.classList.toggle('active');
             mobileMenu.classList.toggle('active');
             
-            // Prevenir scroll en el fondo cuando el menú está abierto
             if(mobileMenu.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
+                mainHeader.classList.remove('is-hidden'); // Asegura que se vea al abrirse
             } else {
                 document.body.style.overflow = '';
             }
@@ -691,13 +710,24 @@
 
         hamburgerBtn.addEventListener('click', toggleMenu);
 
-        // Cerrar menú al hacer clic en un enlace
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
                 hamburgerBtn.classList.remove('active');
                 mobileMenu.classList.remove('active');
                 document.body.style.overflow = '';
             });
+        });
+
+        // --- DETECTAR SCROLL PARA DESVANECER LA BARRA SUPERIOR ---
+        window.addEventListener('scroll', () => {
+            // Solo desvanece si el menú móvil NO está activo
+            if (!mobileMenu.classList.contains('active')) {
+                if (window.scrollY > 50) {
+                    mainHeader.classList.add('is-hidden');
+                } else {
+                    mainHeader.classList.remove('is-hidden');
+                }
+            }
         });
 
         // Reset scroll en recarga
