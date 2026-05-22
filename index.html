@@ -378,7 +378,6 @@
 
         .narrative-form {
             font-family: var(--font-serif);
-            /* Escala optimizada para mayor sutileza y elegancia */
             font-size: clamp(1.1rem, 2.2vw, 1.5rem);
             line-height: 2;
             max-width: 850px;
@@ -405,10 +404,12 @@
         }
 
         .btn-premium {
+            display: inline-block;
             padding: 16px 36px;
             border: 1px solid var(--color-arena);
             background: transparent;
             color: var(--color-arena);
+            text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 3px;
             font-size: 0.75rem;
@@ -456,7 +457,7 @@
         </nav>
     </header>
 
-    <!-- MAIN HERO (BOTÓN REMOVIDO) -->
+    <!-- MAIN HERO -->
     <section class="hero">
         <div class="section-container">
             <p>Akumal, Quintana Roo</p>
@@ -560,7 +561,8 @@
                 </div>
             </div>
             <div style="text-align: center;">
-                <button class="btn-premium" style="margin-top: 50px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud Privada</button>
+                <!-- Botón convertido en enlace a WhatsApp -->
+                <a href="https://wa.me/529841258758" target="_blank" class="btn-premium" style="margin-top: 50px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud</a>
             </div>
         </div>
     </section>
