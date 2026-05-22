@@ -2,95 +2,393 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Amazing Colors | Itinerario Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa Búho Dorado | Akumal Luxury Rental</title>
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #f7f5f0; padding: 20px; color: #04263a; }
-        .assistant-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
-        select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; }
-        .btn-generate { width: 100%; padding: 15px; background: #04263a; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; }
-        .day-block { background: #fff; padding: 20px; margin-top: 15px; border-left: 5px solid #bd5307; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+        :root {
+            --color-arena: #F5F2EB;
+            --color-obsidiana: #111111;
+            --color-oro: #D4AF37;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-obsidiana);
+            color: var(--color-arena);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* TIPOGRAFÍA GLOBAL */
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+        }
+
+        /* NAVEGACIÓN ULTRA MINIMALISTA */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.6;
+        }
+
+        /* 1. HERO CINEMÁTICO */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(rgba(17,17,17,0.45), rgba(17,17,17,0.45)), 
+                        url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            font-style: italic;
+            max-width: 900px;
+        }
+
+        .hero p {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            color: var(--color-arena);
+            opacity: 0.8;
+        }
+
+        .btn-premium {
+            padding: 18px 40px;
+            border: 1px solid var(--color-arena);
+            background: transparent;
+            color: var(--color-arena);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s, color 0.3s;
+        }
+
+        .btn-premium:hover {
+            background: var(--color-arena);
+            color: var(--color-obsidiana);
+            transform: translateY(-2px);
+        }
+
+        /* 2. LA EXPERIENCIA (NARRATIVA HUMANA) */
+        .experiencia {
+            background-color: var(--color-arena);
+            color: var(--color-obsidiana);
+            padding: 160px 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .experiencia span {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .experiencia h2 {
+            font-size: 3rem;
+            max-width: 800px;
+            line-height: 1.3;
+            margin-bottom: 40px;
+        }
+
+        .experiencia p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 650px;
+            color: #444;
+            font-weight: 300;
+        }
+
+        /* 3. ARQUITECTURA VIVA (SCROLL TRACK) */
+        .arquitectura-track {
+            position: relative;
+            height: 300vh;
+            background-color: #0d0d0d;
+        }
+
+        .sticky-scene {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .split-view {
+            position: relative;
+            width: 85vw;
+            height: 70vh;
+            max-width: 1400px;
+        }
+
+        .layer-blueprint {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #141414;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .blueprint-svg {
+            width: 80%;
+            height: 80%;
+            stroke: var(--color-oro);
+            stroke-width: 0.8;
+            fill: none;
+            opacity: 0.5;
+        }
+
+        .layer-rendered {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            z-index: 2;
+            clip-path: inset(0 100% 0 0);
+        }
+
+        .scroll-indicator-container {
+            position: absolute;
+            left: 50%;
+            top: 15%;
+            transform: translateX(-50%);
+            height: 70%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 10;
+        }
+
+        .scroll-indicator-bar {
+            width: 100%;
+            height: 0%;
+            background: var(--color-oro);
+            box-shadow: 0 0 8px var(--color-oro);
+        }
+
+        .section-title {
+            position: absolute;
+            top: -60px;
+            left: 0;
+            font-size: 2rem;
+            font-style: italic;
+        }
+
+        .meta-panel {
+            position: absolute;
+            bottom: -60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(245, 242, 235, 0.4);
+        }
+
+        /* 4. RESERVA CONCIERGE PRIVADO */
+        .concierge-section {
+            height: 100vh;
+            background-color: var(--color-arena);
+            color: var(--color-obsidiana);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .concierge-section h2 {
+            font-size: 3rem;
+            margin-bottom: 50px;
+        }
+
+        .narrative-form {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            line-height: 4rem;
+            max-width: 1000px;
+            color: #666;
+        }
+
+        .narrative-form select, .narrative-form input {
+            border: none;
+            border-bottom: 1px solid var(--color-obsidiana);
+            background: transparent;
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--color-obsidiana);
+            padding: 0 12px;
+            outline: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<div class="assistant-container">
-    <h2>Diseñador de Itinerarios</h2>
-    <div class="form-grid">
-        <div><label>Noches</label><select id="nights"></select></div>
-        <div><label>Personas</label><select id="people"></select></div>
-        <div><label>Presupuesto (MXN)</label><select id="budget"></select></div>
-        <div><label>Destino</label><select id="dest"><option value="Cancun">Cancún</option><option value="Playa del Carmen">Playa del Carmen</option><option value="Tulum">Tulum</option></select></div>
-    </div>
-    
-    <button id="plan-btn" class="btn-generate">PLANIFICAR MI ITINERARIO</button>
-    <div id="itinerary-result" style="margin-top:20px;"></div>
-</div>
+    <header>
+        <div class="logo">Casa Búho Dorado</div>
+        <nav>
+            <a href="#experiencia">Experiencia</a>
+            <a href="#arquitectura">Arquitectura</a>
+            <a href="#reserva">Reservar</a>
+        </nav>
+    </header>
 
-<script>
-    const TSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9f5_81pPWsXVaJ5uKaifOyjpmSprGKAzEkGh7qMSd5R83cV8UCJeqldoZIb5l3sN8kDEbFoC2NY0s/pub?output=tsv';
-    let fullData = [];
+    <section class="hero">
+        <p>Akumal, Quintana Roo</p>
+        <h1>“We are not hosts, we are memory makers.”</h1>
+        <button class="btn-premium" onclick="document.getElementById('reserva').scrollIntoView();">Consultar Disponibilidad</button>
+    </section>
 
-    // 1. Cargar datos
-    async function loadData() {
-        try {
-            const resp = await fetch(TSV_URL);
-            const text = await resp.text();
-            const rows = text.split('\n').map(r => r.split('\t'));
-            const headers = rows[0].map(h => h.trim());
-            fullData = rows.slice(1).map(row => {
-                let obj = {}; headers.forEach((h, i) => obj[h.trim()] = row[i]?.trim()); return obj;
-            });
-            console.log("Datos cargados correctamente:", fullData.length, "items.");
-        } catch(e) { console.error("Error al cargar:", e); }
-    }
+    <section class="experiencia" id="experiencia">
+        <span>Santuario Exclusivo</span>
+        <h2>Donde la privacidad abraza al Caribe</h2>
+        <p>Un espacio curado minuciosamente para albergar historias inolvidables. Diseñada para hospedar de forma impecable a 8 adultos y 2 menores bajo una atmósfera de calma absoluta y sofisticación tropical.</p>
+    </section>
 
-    // 2. Inicializar al cargar la página
-    window.addEventListener('DOMContentLoaded', () => {
-        loadData();
-        for(let i=2; i<=30; i++) document.getElementById('nights').innerHTML += `<option value="${i}">${i} Noches</option>`;
-        for(let i=1; i<=60; i++) document.getElementById('people').innerHTML += `<option value="${i}">${i} Personas</option>`;
-        for(let i=2000; i<=99000; i+=5000) document.getElementById('budget').innerHTML += `<option value="${i}">Hasta $${i.toLocaleString()} MXN</option>`;
-
-        // 3. Conexión segura del botón
-        document.getElementById('plan-btn').addEventListener('click', () => {
-            console.log("Botón presionado. Generando...");
-            generateItinerary();
-        });
-    });
-
-    function generateItinerary() {
-        const res = document.getElementById('itinerary-result');
-        const nights = parseInt(document.getElementById('nights').value);
-        const dest = document.getElementById('dest').value;
-
-        if (fullData.length === 0) {
-            res.innerHTML = "<p style='color:red'>Los datos no han cargado aún. Espera 2 segundos y presiona de nuevo.</p>";
-            return;
-        }
-
-        // Filtramos buscando las columnas EXACTAS de tu hoja (TIPO, Nombre, Precios)
-        const yate = fullData.find(i => i['TIPO'] && i['TIPO'].toLowerCase().includes('yate'));
-        const tours = fullData.filter(i => i['TIPO'] && i['TIPO'].toLowerCase().includes('tour'));
-
-        let html = `<h3>Itinerario para ${nights} noches en ${dest}</h3>`;
-        let spent = 0;
-
-        for(let i=1; i<=nights; i++) {
-            if(i % 2 !== 0) {
-                const act = (i === 1 && yate) ? yate : tours[(i-1) % (tours.length || 1)];
-                const nombre = act ? act['Nombre'] : "Tour Privado";
-                const precioRaw = act ? act['Precios'] : "2000"; 
-                const precio = parseInt(precioRaw.toString().replace(/[^0-9]/g, '')) || 2000;
+    <section class="arquitectura-track" id="arquitectura">
+        <div class="sticky-scene">
+            <div class="split-view">
                 
-                spent += precio;
-                html += `<div class="day-block"><strong>Día ${i}:</strong> ${nombre} ($${precio.toLocaleString()} MXN)</div>`;
-            } else {
-                html += `<div class="day-block"><strong>Día ${i}:</strong> Descanso en ${dest}.</div>`;
+                <h2 class="section-title" id="estado-texto">Arquitectura Viva</h2>
+                
+                <div class="scroll-indicator-container">
+                    <div class="scroll-indicator-bar" id="progress-bar"></div>
+                </div>
+
+                <div class="layer-blueprint">
+                    <svg class="blueprint-svg" viewBox="0 0 800 450">
+                        <rect x="100" y="80" width="600" height="280" stroke-dasharray="6,4"/>
+                        <line x1="100" y1="240" x2="700" y2="240" />
+                        <line x1="350" y1="80" x2="350" y2="360" />
+                        <rect x="400" y="280" width="250" height="80" />
+                        <text x="110" y="110" fill="#D4AF37" font-family="sans-serif" font-size="8" letter-spacing="2">CASA BÚHO DORADO - MASTER PLAN</text>
+                    </svg>
+                </div>
+
+                <div class="layer-rendered" id="render-layer"></div>
+
+                <div class="meta-panel">
+                    <div>Ubicación: Akumal, MX</div>
+                    <div>Capacidad: 8 Adultos + 2 Menores</div>
+                    <div id="percentage-label">0% Renderizado</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="concierge-section" id="reserva">
+        <h2>Diseña Tu Estancia</h2>
+        <div class="narrative-form">
+            Deseamos reservar la villa para 
+            <select>
+                <option>8 Adultos</option>
+                <option>6 Adultos</option>
+                <option>4 Adultos</option>
+            </select> 
+            junto a 
+            <select>
+                <option>2 Menores</option>
+                <option>0 Menores</option>
+            </select>, 
+            planeando nuestro escape el día <input type="text" value="DD / MM / AA" style="width: 220px; text-align: center;"> 
+            para vivir la exclusividad de Akumal.
+        </div>
+        <button class="btn-premium" style="margin-top: 70px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Contactar Concierge Privado</button>
+    </section>
+
+    <script>
+        const arquitecturaSection = document.getElementById('arquitectura');
+        const renderLayer = document.getElementById('render-layer');
+        const progressBar = document.getElementById('progress-bar');
+        const percentageLabel = document.getElementById('percentage-label');
+        const estadoTexto = document.getElementById('estado-texto');
+
+        window.addEventListener('scroll', () => {
+            const rect = arquitecturaSection.getBoundingClientRect();
+            const totalScrollable = arquitecturaSection.offsetHeight - window.innerHeight;
+            const currentProgress = -rect.top;
+
+            if (currentProgress >= 0 && currentProgress <= totalScrollable) {
+                const pct = currentProgress / totalScrollable;
+                
+                // Efecto de barrido con clip-path
+                renderLayer.style.clipPath = `inset(0 ${(1 - pct) * 100}% 0 0)`;
+                progressBar.style.height = `${pct * 100}%`;
+                
+                percentageLabel.innerText = `${Math.round(pct * 100)}% Materializado`;
+
+                if (pct < 0.2) {
+                    estadoTexto.innerText = "Líneas Conceptuales";
+                } else if (pct >= 0.2 && pct < 0.7) {
+                    estadoTexto.innerText = "Desarrollo de Texturas";
+                } else {
+                    estadoTexto.innerText = "Espacio Concluido";
+                }
             }
-        }
-        res.innerHTML = html + `<p style="margin-top:20px;"><strong>Total estimado:</strong> $${spent.toLocaleString()} MXN</p>`;
-    }
-</script>
+        });
+    </script>
 </body>
 </html>
