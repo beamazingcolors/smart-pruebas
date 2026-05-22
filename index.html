@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casa Búho Dorado | Akumal Exclusive Rental</title>
     
-    <!-- FAVICON -->
+    <!-- FAVICON IDÉNTICO AL LOGO -->
     <link rel="icon" type="image/png" href="LLG.png">
 
     <style>
@@ -354,7 +354,7 @@
             color: rgba(245, 242, 235, 0.4);
         }
 
-        /* 5. CONCIERGE DIGITAL (RESERVAR) REFINADO */
+        /* 5. CONCIERGE DIGITAL (RESERVAR) */
         .concierge-section {
             background-color: var(--color-arena);
             color: var(--color-obsidiana);
@@ -423,7 +423,7 @@
             transform: translateY(-2px);
         }
 
-        /* FOOTER BRANDING */
+        /* FOOTER BRANDING ACTUALIZADO */
         footer {
             background-color: #090909;
             padding: 60px 0;
@@ -432,18 +432,19 @@
         }
 
         .footer-brand {
-            font-family: var(--font-serif);
-            font-size: 0.85rem;
-            letter-spacing: 5px;
-            color: rgba(255,255,255,0.2);
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
             text-align: center;
+            font-weight: 300;
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER CON LOGO REEQUILIBRADO -->
+    <!-- HEADER -->
     <header>
         <button class="logo-wrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Volver al inicio">
             <img src="LLG.png" alt="LLG Logo" class="logo-img">
@@ -508,7 +509,6 @@
                     <div class="scroll-indicator-bar" id="progress-bar"></div>
                 </div>
 
-                <!-- Capa Inferior: Plano Técnico -->
                 <div class="layer-blueprint">
                     <svg class="blueprint-svg" viewBox="0 0 800 450">
                         <rect x="120" y="90" width="560" height="270" stroke-dasharray="6,4"/>
@@ -519,10 +519,8 @@
                     </svg>
                 </div>
 
-                <!-- Capa Superior: Imagen Real Materializada -->
                 <div class="layer-rendered" id="render-layer"></div>
 
-                <!-- Datos Técnicos del Panel Inferior -->
                 <div class="meta-panel">
                     <div>Plano: 01 / Akumal</div>
                     <div>Capacidad: 8 Adultos + 2 Menores</div>
@@ -561,22 +559,25 @@
                 </div>
             </div>
             <div style="text-align: center;">
-                <!-- Botón convertido en enlace a WhatsApp -->
                 <a href="https://wa.me/529841258758" target="_blank" class="btn-premium" style="margin-top: 50px; border-color: var(--color-obsidiana); color: var(--color-obsidiana);">Enviar Solicitud</a>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER CON DERECHOS Y AÑO DINÁMICO -->
     <footer>
         <div class="section-container">
-            <div class="footer-brand">NANO BANANA STUDIO — CONCEPT ART</div>
+            <div class="footer-brand">
+                CASA BÚHO DORADO - Todos los derechos reservados <span id="current-year">2026</span>
+            </div>
         </div>
     </footer>
 
-    <!-- INTERACTION, ANIMATION & AUTO-RESET LOGIC -->
+    <!-- INTERACTION & ANIMATION LOGIC -->
     <script>
-        // --- CONTROL DE RESET AL RECARGAR ---
+        // Actualizar el año automáticamente
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
         if (history.scrollRestoration) {
             history.scrollRestoration = 'manual';
         }
@@ -586,7 +587,6 @@
             window.scrollTo(0, 0);
         });
 
-        // --- INTERSECTION OBSERVER PARA EFECTO DESVANECIDO EN SCROLL ---
         const fadeElements = document.querySelectorAll('.fade-element');
         
         const appearanceOptions = {
@@ -608,8 +608,6 @@
             appearanceObserver.observe(element);
         });
 
-
-        // --- SCROLL CINEMÁTICO (ARQUITECTURA VIVA) ---
         const arquitecturaSection = document.getElementById('arquitectura');
         const renderLayer = document.getElementById('render-layer');
         const progressBar = document.getElementById('progress-bar');
